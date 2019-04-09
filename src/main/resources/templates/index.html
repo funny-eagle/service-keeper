@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)https://v3.bootcss.com/examples/theme/ -->
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="service keeper">
+    <meta name="author" content="YangJinlong">
+    <link rel="icon" href="#">
+
+    <title>Theme Template for Bootstrap</title>
+    <!-- Custom styles for this template -->
+    <link th:href="@{vendor/theme.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{vendor/bootstrap/css/bootstrap.min.css}">
+    <script th:src="@{vendor/js/bootstrap.min.js}"></script>
+    <script th:src="@{vendor/jquery-3.3.1.min.js}"></script>
+</head>
+
+<body>
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Yuntu Service Keeper</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="https://v3.bootcss.com/examples/theme/#">Home</a></li>
+                <li><a href="https://v3.bootcss.com/examples/theme/#about">About</a></li>
+                <li><a href="https://v3.bootcss.com/examples/theme/#contact">Contact</a></li>
+                <li class="dropdown">
+                    <a href="https://v3.bootcss.com/examples/theme/#" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://v3.bootcss.com/examples/theme/#">Action</a></li>
+                        <li><a href="https://v3.bootcss.com/examples/theme/#">Another action</a></li>
+                        <li><a href="https://v3.bootcss.com/examples/theme/#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">Nav header</li>
+                        <li><a href="https://v3.bootcss.com/examples/theme/#">Separated link</a></li>
+                        <li><a href="https://v3.bootcss.com/examples/theme/#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container theme-showcase" role="main">
+    <div class="page-header">
+        <h1>Service List</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>服务器IP</th>
+                    <th>服务名称</th>
+                    <th>服务状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>127.0.0.1</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>127.0.0.1</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>127.0.0.1</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                    <td>@mdo</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

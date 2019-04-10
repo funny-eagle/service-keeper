@@ -26,7 +26,49 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-xs btn-primary">添加服务</button>
+            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModal">
+                <span class="glyphicon glyphicon-plus"></span>  添加服务
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">添加服务</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="service-name" class="control-label">服务名称:</label>
+                                    <input type="text" class="form-control" id="service-name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="service-ip" class="control-label">IP:</label>
+                                    <input type="text" class="form-control" id="service-ip">
+                                </div>
+                                <div class="form-group">
+                                    <label for="service-port" class="control-label">端口:</label>
+                                    <input type="text" class="form-control" id="service-port">
+                                </div>
+                                <div class="form-group">
+                                    <label for="service-status" class="control-label">运行状态:</label>
+                                    <input type="text" class="form-control" id="service-status">
+                                </div>
+                                <div class="form-group">
+                                    <label for="service-comment" class="control-label">备注:</label>
+                                    <textarea class="form-control" id="service-comment"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">

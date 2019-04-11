@@ -4,7 +4,7 @@ package org.nocoder.servicekeeper.domain.modal;
  * Service
  */
 public class Service {
-    private int id;
+    private Integer id;
     private String name;
     private String ip;
     private String port;
@@ -12,11 +12,11 @@ public class Service {
     private String create_time;
     private String update_time;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

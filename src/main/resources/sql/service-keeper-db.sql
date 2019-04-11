@@ -24,9 +24,9 @@ CREATE TABLE "command" (
 "command"  TEXT,
 "description"  TEXT,
 "operation_type"  INTEGER,
-"create_time"  TEXT,
+"createTime"  TEXT,
 "create_user"  TEXT,
-"update_time"  TEXT,
+"updateTime"  TEXT,
 "status"  TEXT
 );
 
@@ -66,8 +66,8 @@ CREATE TABLE "service" (
 "ip"  TEXT,
 "port"  TEXT,
 "status"  TEXT,
-"create_time"  TEXT,
-"update_time"  TEXT
+"createTime"  TEXT,
+"updateTime"  TEXT
 );
 
 -- ----------------------------
@@ -78,9 +78,9 @@ CREATE TABLE "service_command_mapping" (
 "id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "service_id"  INTEGER,
 "command_id"  INTEGER,
-"create_time"  TEXT,
+"createTime"  TEXT,
 "create_user"  TEXT,
-"update_time"  TEXT
+"updateTime"  TEXT
 );
 
 -- ----------------------------
@@ -97,7 +97,7 @@ CREATE TABLE "user" (
 "id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "name"  TEXT,
 "password"  TEXT,
-"create_time"  TEXT,
+"createTime"  TEXT,
 "last_sign_in_time"  TEXT,
 "last_sign_in_ip"  TEXT
 );

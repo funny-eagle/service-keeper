@@ -15,6 +15,7 @@
     <link rel="stylesheet" th:href="@{vendor/bootstrap/css/bootstrap.min.css}">
     <script th:src="@{vendor/jquery-3.3.1.min.js}"></script>
     <script th:src="@{vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{vendor/serialize_object.js}"></script>
 </head>
 
 <body>
@@ -26,45 +27,42 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModal">
+            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#serviceModal">
                 <span class="glyphicon glyphicon-plus"></span>  新建服务
             </button>
 
             <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade" id="serviceModal" tabindex="-1" role="dialog" aria-labelledby="serviceModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">新建服务</h4>
+                            <h4 class="modal-title" id="serviceModalLabel">新建服务</h4>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form id="service-form">
+                                <input type="hidden" class="form-control" id="id" name="id">
                                 <div class="form-group">
-                                    <label for="service-name" class="control-label">服务名称:</label>
-                                    <input type="text" class="form-control" id="service-name">
+                                    <label for="name" class="control-label">服务名称:</label>
+                                    <input type="text" class="form-control" id="name" name="name">
                                 </div>
                                 <div class="form-group">
-                                    <label for="service-ip" class="control-label">IP:</label>
-                                    <input type="text" class="form-control" id="service-ip">
+                                    <label for="ip" class="control-label">IP:</label>
+                                    <input type="text" class="form-control" id="ip" name="ip">
                                 </div>
                                 <div class="form-group">
-                                    <label for="service-port" class="control-label">端口:</label>
-                                    <input type="text" class="form-control" id="service-port">
+                                    <label for="port" class="control-label">端口:</label>
+                                    <input type="text" class="form-control" id="port" name="port">
                                 </div>
                                 <div class="form-group">
-                                    <label for="service-status" class="control-label">运行状态:</label>
-                                    <input type="text" class="form-control" id="service-status">
-                                </div>
-                                <div class="form-group">
-                                    <label for="service-comment" class="control-label">备注:</label>
-                                    <textarea class="form-control" id="service-comment"></textarea>
+                                    <label for="status" class="control-label">运行状态:</label>
+                                    <input type="text" class="form-control" id="status" name="status">
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" id="btn-save">保存</button>
                         </div>
                     </div>
                 </div>
@@ -91,6 +89,10 @@
 </div>
 <script>
     $(document).ready(function () {
+        getServiceList();
+    });
+
+    function getServiceList(){
         $("#server-tbody").html("loading...");
         $.ajax({
             type: "get",
@@ -106,13 +108,28 @@
                         "<td>" + res.data[i].name + "</td>" +
                         "<td>" + res.data[i].status + "</td>" +
                         "<td width='250px;'>" +
-                            "<button type=\"button\" class=\"btn btn-xs btn-success\">发布新版</button>\n" +
-                            "<button type=\"button\" class=\"btn btn-xs btn-warning\">重启服务</button>\n" +
-                            "<button type=\"button\" class=\"btn btn-xs btn-danger\">停止服务</button>\n" +
+                        "<button type=\"button\" class=\"btn btn-xs btn-success\">发布新版</button>\n" +
+                        "<button type=\"button\" class=\"btn btn-xs btn-warning\">重启服务</button>\n" +
+                        "<button type=\"button\" class=\"btn btn-xs btn-danger\">停止服务</button>\n" +
                         "</td>" +
                         "</tr>" + ""
                     );
                 }
+            }
+        });
+    }
+
+    $("#btn-save").click(function(){
+        $("#btn-save").attr("disabled","disabled");
+        $.ajax({
+            type: "post",
+            url: "service",
+            data: $("#service-form").serialize_object(),
+            success: function (res) {
+                $("#btn-save").removeAttr("disabled");
+                $("input").val("");
+                $("#serviceModal").modal("hide");
+                getServiceList();
             }
         });
     });

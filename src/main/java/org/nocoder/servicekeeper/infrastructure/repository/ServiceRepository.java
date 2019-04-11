@@ -17,7 +17,7 @@ public interface ServiceRepository {
     @Select("SELECT * FROM service WHERE id = #{id}")
     Service getById(Integer id);
 
-    @Insert("INSERT INTO service")
+    @Insert("INSERT INTO service (name, ip, port, status) VALUES (#{name}, #{ip}, #{port}, #{status})")
     int insert(Service service);
 
     @Update("UPDATE service SET name=#{name} WHERE id =#{id}")

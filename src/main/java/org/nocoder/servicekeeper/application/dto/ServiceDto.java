@@ -1,19 +1,19 @@
 package org.nocoder.servicekeeper.application.dto;
 
 public class ServiceDto {
-    private int id;
+    private Integer id;
     private String name;
     private String ip;
     private String port;
     private String status;
-    private String create_time;
-    private String update_time;
+    private String createTime;
+    private String updateTime;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -49,19 +49,19 @@ public class ServiceDto {
         this.status = status;
     }
 
-    public String getCreate_time() {
-        return create_time;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(String create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
-    public String getUpdate_time() {
-        return update_time;
+    public String getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(String update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 }

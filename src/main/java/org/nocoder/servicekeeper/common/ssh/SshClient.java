@@ -6,6 +6,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
+/**
+ * ssh client
+ * @author YangJinlong
+ */
 public class SshClient {
     
     private static Logger logger = LoggerFactory.getLogger(SshClient.class);

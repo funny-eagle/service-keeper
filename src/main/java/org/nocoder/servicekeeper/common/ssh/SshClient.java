@@ -19,25 +19,25 @@ public class SshClient {
             session.setUserInfo(new SshUserInfo());
 
             try{
-                logger.info("开始建立SSH连接...");
+                logger.info("connecting to ssh server...");
                 session.connect(30000);
-                logger.info("SSH连接成功");
+                logger.info("connected to ssh server.");
             }catch(Exception e){
-                logger.info("SSH连接失败，3s 后开始重试...");
+                logger.info("connect failed, retry after 3s...");
                 Thread.sleep(3000);
                 try{
-                    logger.info("重新尝试建立SSH连接...");
+                    logger.info("try to connect to ssh server again...");
                     session.connect(30000);
-                    logger.info("SSH连接成功");
+                    logger.info("connected to ssh server.");
                 }catch (Exception ee){
-                    logger.info("SSH重试连接失败！");
+                    logger.info("retry ssh connection failed.");
                     return;
                 }
             }
 
             Channel channel = session.openChannel("exec");
             ((ChannelExec) channel).setCommand(command);
-            logger.info("开始执行命令:" + command);
+            logger.info("start to execute command: {}", command);
             channel.setInputStream(null);
 
             ((ChannelExec) channel).setErrStream(System.err);
@@ -59,7 +59,7 @@ public class SshClient {
                     if (in.available() > 0) {
                         continue;
                     }
-                    logger.info("关闭SSH连接: exist-status=" + channel.getExitStatus());
+                    logger.info("ssh connection closed, exist-status={}", channel.getExitStatus());
                     break;
                 }
             }

@@ -6,10 +6,15 @@ import org.nocoder.servicekeeper.application.dto.ServerDto;
 import org.nocoder.servicekeeper.domain.modal.Server;
 import org.nocoder.servicekeeper.infrastructure.repository.ServerRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * server service impl
+ * @author YangJinlong
+ */
 @Service
 public class ServerServiceImpl implements ServerService {
     @Resource
@@ -19,6 +24,7 @@ public class ServerServiceImpl implements ServerService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int insert(ServerDto serverDto) {
         Server server = assembler.convertToServer(serverDto);
         return serverRepository.insert(server);

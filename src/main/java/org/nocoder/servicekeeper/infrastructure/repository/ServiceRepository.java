@@ -16,12 +16,12 @@ public interface ServiceRepository {
     Service getById(Integer id);
 
     @Insert("INSERT INTO service")
-    void insert(Service service);
+    int insert(Service service);
 
     @Update("UPDATE service SET name=#{name} WHERE id =#{id}")
-    void update(Service service);
+    int update(Service service);
 
     @Delete("DELETE FROM service WHERE id =#{id}")
-    void delete(Integer id);
+    int delete(Integer id);
 
 }

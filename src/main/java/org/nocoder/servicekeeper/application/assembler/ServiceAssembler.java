@@ -34,4 +34,13 @@ public class ServiceAssembler {
         serviceList.forEach(service -> serviceDtoList.add(convertToDto(service)));
         return serviceDtoList;
     }
+
+    public Service convertToService(ServiceDto dto) {
+        if(dto == null){
+            return null;
+        }
+        Service service = new Service();
+        BeanUtils.copyProperties(dto, service);
+        return service;
+    }
 }

@@ -2,9 +2,10 @@ package org.nocoder.servicekeeper.application.service.impl;
 
 import org.nocoder.servicekeeper.application.assembler.ServiceAssembler;
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
+import org.nocoder.servicekeeper.application.service.ServiceService;
 import org.nocoder.servicekeeper.domain.modal.Service;
 import org.nocoder.servicekeeper.infrastructure.repository.ServiceRepository;
-import org.nocoder.servicekeeper.application.service.ServiceService;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,8 +29,15 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public List<ServiceDto> getAll(){
+    public List<ServiceDto> getAll() {
         List<Service> serviceList = serviceRepository.getAll();
         return assembler.convertToDtoList(serviceList);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int insert(ServiceDto dto){
+        Service service = assembler.convertToService(dto);
+        return serviceRepository.insert(service);
     }
 }

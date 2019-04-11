@@ -2,10 +2,12 @@ package org.nocoder.servicekeeper.infrastructure.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.nocoder.servicekeeper.domain.modal.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
+@Repository
 public interface ServiceRepository {
 
 

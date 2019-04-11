@@ -26,7 +26,56 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-xs btn-primary">添加服务器</button>
+            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#serverModal" data-modal-title="新建连接">
+                <span class="glyphicon glyphicon-plus"></span> 新建连接
+            </button>
+            <div class="modal fade" id="serverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="serverModalLabel">新建连接</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="server-id" class="control-label">ID:</label>
+                                    <input type="text" class="form-control" id="server-id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="server-name" class="control-label">名称:</label>
+                                    <input type="text" class="form-control" id="server-name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="server-ip" class="control-label">主机:</label>
+                                    <input type="text" class="form-control" id="server-ip" placeholder="127.0.0.1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="server-port" class="control-label">端口:</label>
+                                    <input type="text" class="form-control" id="server-port" placeholder="22">
+                                </div>
+                                <div class="form-group">
+                                    <label for="server-protocol" class="control-label">协议:</label>
+                                    <input type="text" class="form-control" id="server-protocol" value="SSH">
+                                </div>
+                                <div class="form-group">
+                                    <label for="server-user" class="control-label">用户名:</label>
+                                    <input type="text" class="form-control" id="server-user" placeholder="root">
+                                </div>
+                                <div class="form-group">
+                                    <label for="server-password" class="control-label">密码:</label>
+                                    <input type="password" class="form-control" id="server-password">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-success">测试连接</button>
+                            <button type="button" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -35,8 +84,10 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>服务器名称</th>
-                    <th>服务器IP</th>
+                    <th>名称</th>
+                    <th>主机</th>
+                    <th>端口</th>
+                    <th>协议</th>
                     <th>用户名</th>
                     <th>操作</th>
                 </tr>
@@ -48,6 +99,15 @@
     </div>
 </div>
 <script>
+    $('#serverModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('modal-title') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this);
+        console.log(recipient);
+        modal.find('.modal-title').html(recipient)
+    });
     $(document).ready(function () {
         $("#server-tbody").html("loading...");
         $.ajax({
@@ -60,13 +120,13 @@
                     $("#server-tbody").append(
                         "<tr>" +
                         "<td width='10px;'>" + (i + 1) + "</td>" +
-                        "<td>" + res.data[i].ip + "</td>" +
                         "<td>" + res.data[i].name + "</td>" +
+                        "<td>" + res.data[i].ip + "</td>" +
+                        "<td>" + res.data[i].status + "</td>" +
+                        "<td>" + res.data[i].status + "</td>" +
                         "<td>" + res.data[i].status + "</td>" +
                         "<td width='250px;'>" +
-                            "<button type=\"button\" class=\"btn btn-xs btn-success\">发布新版</button>\n" +
-                            "<button type=\"button\" class=\"btn btn-xs btn-warning\">重启服务</button>\n" +
-                            "<button type=\"button\" class=\"btn btn-xs btn-danger\">停止服务</button>\n" +
+                            "<button type=\"button\" class=\"btn btn-xs btn-link\" data-toggle=\"modal\" data-target=\"#serverModal\" data-modal-title=\"编辑连接\">编辑连接</button>\n" +
                         "</td>" +
                         "</tr>" + ""
                     );

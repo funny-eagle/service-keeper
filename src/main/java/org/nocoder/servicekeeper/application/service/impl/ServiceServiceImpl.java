@@ -3,6 +3,7 @@ package org.nocoder.servicekeeper.application.service.impl;
 import org.nocoder.servicekeeper.application.assembler.ServiceAssembler;
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
 import org.nocoder.servicekeeper.application.service.ServiceService;
+import org.nocoder.servicekeeper.domain.modal.Command;
 import org.nocoder.servicekeeper.domain.modal.Service;
 import org.nocoder.servicekeeper.infrastructure.repository.ServiceRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,5 +40,15 @@ public class ServiceServiceImpl implements ServiceService {
     public int insert(ServiceDto dto){
         Service service = assembler.convertToService(dto);
         return serviceRepository.insert(service);
+    }
+
+    @Override
+    public void executeCommand(Command command) {
+
+    }
+
+    @Override
+    public void bindCommand(Service service, Command command) {
+
     }
 }

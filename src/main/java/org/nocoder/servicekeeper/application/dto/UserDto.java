@@ -1,7 +1,6 @@
-package org.nocoder.servicekeeper.modal;
+package org.nocoder.servicekeeper.application.dto;
 
-public class User {
-
+public class UserDto {
     private int id;
     private String name;
     private String password;

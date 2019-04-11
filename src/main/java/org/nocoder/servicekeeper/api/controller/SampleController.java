@@ -1,4 +1,4 @@
-package org.nocoder.servicekeeper.controller;
+package org.nocoder.servicekeeper.api.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

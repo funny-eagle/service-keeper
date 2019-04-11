@@ -1,9 +1,8 @@
-package org.nocoder.servicekeeper.controller;
+package org.nocoder.servicekeeper.api.controller;
 
 
+import org.nocoder.servicekeeper.application.service.UserService;
 import org.nocoder.servicekeeper.common.BaseResponse;
-import org.nocoder.servicekeeper.modal.User;
-import org.nocoder.servicekeeper.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

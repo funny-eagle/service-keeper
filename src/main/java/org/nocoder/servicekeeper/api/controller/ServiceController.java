@@ -1,7 +1,7 @@
-package org.nocoder.servicekeeper.controller;
+package org.nocoder.servicekeeper.api.controller;
 
 import org.nocoder.servicekeeper.common.BaseResponse;
-import org.nocoder.servicekeeper.repository.ServiceRepository;
+import org.nocoder.servicekeeper.infrastructure.repository.ServiceRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

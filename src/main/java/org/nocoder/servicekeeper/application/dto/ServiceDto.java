@@ -1,9 +1,6 @@
-package org.nocoder.servicekeeper.modal;
+package org.nocoder.servicekeeper.application.dto;
 
-/**
- * Service
- */
-public class Service {
+public class ServiceDto {
     private int id;
     private String name;
     private String ip;

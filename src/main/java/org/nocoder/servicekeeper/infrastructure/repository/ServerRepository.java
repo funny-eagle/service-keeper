@@ -1,7 +1,7 @@
-package org.nocoder.servicekeeper.repository;
+package org.nocoder.servicekeeper.infrastructure.repository;
 
 import org.apache.ibatis.annotations.*;
-import org.nocoder.servicekeeper.modal.Server;
+import org.nocoder.servicekeeper.domain.modal.Server;
 
 import java.util.List;
 
@@ -16,12 +16,12 @@ public interface ServerRepository {
     Server getById(Integer id);
 
     @Insert("INSERT INTO server(name,ip,port,user,password) VALUES(#{name}, #{ip}, #{port}), #{user}, #{password}")
-    void insert(Server server);
+    int insert(Server server);
 
     @Update("UPDATE server SET name=#{name}, ip=#{ip}, port=#{port}, user=#{user}, password=#{password} WHERE id =#{id}")
-    void update(Server server);
+    int update(Server server);
 
     @Delete("DELETE FROM server WHERE id =#{id}")
-    void delete(Integer id);
+    int delete(Integer id);
 
 }

@@ -1,4 +1,4 @@
-package org.nocoder.servicekeeper.modal;
+package org.nocoder.servicekeeper.domain.modal;
 
 public class Server {
     private int id;

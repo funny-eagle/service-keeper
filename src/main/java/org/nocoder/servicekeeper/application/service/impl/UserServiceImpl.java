@@ -1,8 +1,8 @@
-package org.nocoder.servicekeeper.service.impl;
+package org.nocoder.servicekeeper.application.service.impl;
 
-import org.nocoder.servicekeeper.modal.User;
-import org.nocoder.servicekeeper.repository.UserRepository;
-import org.nocoder.servicekeeper.service.UserService;
+import org.nocoder.servicekeeper.domain.modal.User;
+import org.nocoder.servicekeeper.infrastructure.repository.UserRepository;
+import org.nocoder.servicekeeper.application.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,7 +1,7 @@
-package org.nocoder.servicekeeper.repository;
+package org.nocoder.servicekeeper.infrastructure.repository;
 
 import org.apache.ibatis.annotations.*;
-import org.nocoder.servicekeeper.modal.User;
+import org.nocoder.servicekeeper.domain.modal.User;
 
 import java.util.List;
 

@@ -1,11 +1,13 @@
 package org.nocoder.servicekeeper.api.controller;
 
+import org.apache.commons.lang3.Validate;
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
 import org.nocoder.servicekeeper.application.service.ServiceService;
 import org.nocoder.servicekeeper.common.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,10 +42,10 @@ public class ServiceController {
      */
     @PostMapping("")
     @ResponseBody
-    public BaseResponse saveService(ServiceDto serviceDto) {
-        logger.info("==============================");
-        logger.info(serviceDto.getIp());
-        logger.info(serviceDto.getName());
+    public BaseResponse saveService(ServiceDto serviceDto) throws Exception{
+        Validate.notEmpty(serviceDto.getIp(), "ip can not be null");
+        Validate.notEmpty(serviceDto.getPort(), "port can not be null");
+        Validate.notEmpty(serviceDto.getName(), "name can not be null");
         serviceService.insert(serviceDto);
         return new BaseResponse();
     }

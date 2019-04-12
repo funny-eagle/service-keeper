@@ -36,7 +36,6 @@ public class ServiceController {
 
     @GetMapping("/detail/{id}")
     public ModelAndView detail(@PathVariable("id") int id) {
-        logger.info("service id={}", id);
         ServiceDto dto = serviceService.getById(id);
         ModelAndView modelAndView = new ModelAndView("service-detail");
         modelAndView.addObject(dto);

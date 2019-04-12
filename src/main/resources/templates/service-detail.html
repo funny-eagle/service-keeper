@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)https://v3.bootcss.com/examples/theme/ -->
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="service keeper">
+    <meta name="author" content="YangJinlong">
+    <link rel="icon" href="#">
+
+    <title>Service Keeper</title>
+    <!-- Custom styles for this template -->
+    <link th:href="@{/vendor/theme.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+    <script th:src="@{/vendor/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/vendor/serialize_object.js}"></script>
+</head>
+
+<body>
+<div th:include="fragment/navigation :: nav"></div>
+
+<div class="container theme-showcase" role="main">
+    <ol class="breadcrumb">
+        <li><a th:href="@{/service}"><span class="glyphicon glyphicon-arrow-left"></span> 服务列表</a></li>
+        <li class="active"> 服务详情</li>
+    </ol>
+    <div class="page-header">
+        <h3>Service Detail</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form id="service-form">
+                <input type="hidden" class="form-control" id="id" name="id" th:value="${serviceDto.getId()}">
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="name" class="control-label">服务名称:</label>
+                            <input type="text" class="form-control" id="name" name="name"  placeholder="必填，例如：book-service" th:value="${serviceDto.getName()}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="ip" class="control-label">主机IP:</label>
+                            <input type="text" class="form-control" id="ip" name="ip" placeholder="必填，例如：192.168.28.86" th:value="${serviceDto.getIp()}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="port" class="control-label">端口:</label>
+                            <input type="text" class="form-control" id="port" name="port" placeholder="必填，例如：8080" th:value="${serviceDto.getPort()}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="dockerImageName" class="control-label">Docker Image Name:</label>
+                            <input type="text" class="form-control" id="dockerImageName" name="dockerImageName"
+                                   placeholder="必填，例如：192.168.8.88:9091/yuntu-statistics" th:value="${serviceDto.getDockerImageName()}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="dockerImageTag" class="control-label">Docker Image Tag:</label>
+                            <input type="text" class="form-control" id="dockerImageTag" name="dockerImageTag"
+                                   placeholder="必填，例如：1.0" th:value="${serviceDto.getDockerImageTag()}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="dockerContainerName" class="control-label">Docker Container Name:</label>
+                            <input type="text" class="form-control" id="dockerContainerName" name="dockerContainerName"
+                                    placeholder="必填，例如：yuntu-book-service" th:value="${serviceDto.getDockerContainerName()}">
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+                <div class="alert alert-warning" role="alert">
+                    <strong>注意！</strong>
+                    以下命令由上方信息自动生成，点击"编辑"即可启用手动编辑，启用后请仔细检查镜像、标签、容器名等与上方信息保持一致，系统不进行命令校验
+                </div>
+                <div class="form-group">
+                    <label class="control-label">更新镜像(docker pull):</label>
+                    <textarea id="dockerPullCommand" name="dockerPullCommand" class="form-control" disabled="disabled" th:text="${serviceDto.getDockerPullCommand()}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">运行新容器(docker run):<a href="javascript:void(0);" id="edit-run-container">编辑</a> </label>
+                    <textarea id="dockerRunCommand" name="dockerRunCommand" class="form-control" disabled="disabled" th:text="${serviceDto.getDockerRunCommand()}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">启动容器(docker start):</label>
+                    <textarea id="dockerStartCommand" name="dockerStartCommand" class="form-control" disabled="disabled" th:text="${serviceDto.getDockerStartCommand()}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">停止容器(docker stop):</label>
+                    <textarea id="dockerStopCommand" name="dockerStopCommand" class="form-control" disabled="disabled" th:text="${serviceDto.getDockerStopCommand()}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">重启容器(docker restart):</label>
+                    <textarea id="dockerRestartCommand" name="dockerRestartCommand" class="form-control" disabled="disabled" th:text="${serviceDto.getDockerRestartCommand()}"></textarea>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn-save">保存</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+
+    $("#btn-save").click(function () {
+        $("#btn-save").attr("disabled", "disabled");
+        console.log("id="+$("#id").val());
+        console.log($("#id").val() == "");
+        $("textarea").removeAttr("disabled");
+        var data = $("form").serialize_object();
+        console.log(data);
+        $("textarea").attr("disabled","disabled");
+        if($("#id").val() == ""){
+            insert(data);
+        }else{
+            update(data);
+        }
+    });
+
+    function insert(data){
+        $.ajax({
+            type: "post",
+            url: "/service",
+            data: data,
+            success: function (res) {
+                $("#btn-save").removeAttr("disabled");
+            }
+        });
+    }
+
+    function update(data){
+        $.ajax({
+            type: "put",
+            url: "/service",
+            data: data,
+            success: function (res) {
+                $("#btn-save").removeAttr("disabled");
+            }
+        });
+    }
+
+    var dockerImageNameTag = "";
+
+    $("#dockerImageName").focusout(function(){
+        updateDockerInfo();
+    });
+    $("#dockerImageTag").focusout(function(){
+        updateDockerInfo();
+    });
+
+    $("#dockerContainerName").focusout(function(){
+        updateDockerInfo();
+    });
+
+    function updateDockerInfo(){
+        dockerImageNameTag = $("#dockerImageName").val() + ":" + $("#dockerImageTag").val();
+        $("#dockerPullCommand").html("docker pull " + dockerImageNameTag);
+        $("#dockerRunCommand").html("docker run -it -d --name "+ $("#dockerContainerName").val()+ " --net=host " + dockerImageNameTag);
+        $("#dockerStartCommand").html("docker start " + $("#dockerContainerName").val());
+        $("#dockerRestartCommand").html("docker restart " + $("#dockerContainerName").val());
+        $("#dockerStopCommand").html("docker stop " + $("#dockerContainerName").val());
+    }
+
+    $("#edit-run-container").click(function(){
+        $("#dockerRunCommand").removeAttr("disabled");
+    });
+
+</script>
+</body>
+</html>

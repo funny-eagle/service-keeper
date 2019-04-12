@@ -15,6 +15,9 @@ public interface ServiceService {
     @Transactional(rollbackFor = Exception.class)
     int insert(ServiceDto dto);
 
+    @Transactional(rollbackFor = Exception.class)
+    int update(ServiceDto dto);
+
     /**
      * execute command
      * @param command

@@ -43,6 +43,13 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int update(ServiceDto dto){
+        Service service = assembler.convertToService(dto);
+        return serviceRepository.update(service);
+    }
+
+    @Override
     public void executeCommand(Command command) {
 
     }

@@ -9,7 +9,7 @@ Target Server Type    : SQLite
 Target Server Version : 30808
 File Encoding         : 65001
 
-Date: 2019-04-09 18:38:09
+Date: 2019-04-12 18:31:19
 */
 
 PRAGMA foreign_keys = OFF;
@@ -24,9 +24,9 @@ CREATE TABLE "command" (
 "command"  TEXT,
 "description"  TEXT,
 "operation_type"  INTEGER,
-"createTime"  TEXT,
+"create_time"  TEXT,
 "create_user"  TEXT,
-"updateTime"  TEXT,
+"update_time"  TEXT,
 "status"  TEXT
 );
 
@@ -65,9 +65,17 @@ CREATE TABLE "service" (
 "name"  TEXT,
 "ip"  TEXT,
 "port"  TEXT,
+"docker_image_name"  TEXT,
+"docker_image_tag"  TEXT,
+"docker_container_name"  TEXT,
+"docker_pull_command"  TEXT,
+"docker_run_command"  TEXT,
+"docker_start_command"  TEXT,
+"docker_stop_command"  TEXT,
+"docker_restart_command"  TEXT,
 "status"  TEXT,
-"createTime"  TEXT,
-"updateTime"  TEXT
+"create_time"  TEXT,
+"update_time"  TEXT
 );
 
 -- ----------------------------
@@ -78,9 +86,9 @@ CREATE TABLE "service_command_mapping" (
 "id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "service_id"  INTEGER,
 "command_id"  INTEGER,
-"createTime"  TEXT,
+"create_time"  TEXT,
 "create_user"  TEXT,
-"updateTime"  TEXT
+"update_time"  TEXT
 );
 
 -- ----------------------------
@@ -97,7 +105,7 @@ CREATE TABLE "user" (
 "id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "name"  TEXT,
 "password"  TEXT,
-"createTime"  TEXT,
+"create_time"  TEXT,
 "last_sign_in_time"  TEXT,
 "last_sign_in_ip"  TEXT
 );

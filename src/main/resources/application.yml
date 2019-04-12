@@ -6,7 +6,7 @@ spring:
     cache: false
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:E:\\service-keeper-db\\service-keeper.db
+    url: jdbc:sqlite:/Users/jason/local/github/service-keeper.db
     username:
     password:
 

@@ -61,4 +61,6 @@ public interface ServiceRepository {
     @Delete("DELETE FROM service WHERE id =#{id}")
     int delete(Integer id);
 
+    @Update("update service set status=#{status} where id=#{id}")
+    int updateServiceStatus(@Param("id") Integer id, @Param("status") String status);
 }

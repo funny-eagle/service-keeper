@@ -74,6 +74,17 @@ public class ServiceController {
         return new BaseResponse();
     }
 
+
+    @GetMapping("/deploy/{id}")
+    @ResponseBody
+    public BaseResponse deploy(@PathVariable("id") Integer id){
+        logger.info("controller deploy start");
+        serviceService.updateServiceStatus(id, "PENDING");
+        serviceService.executeCommand(id,null);
+        logger.info("controller deploy end");
+        return new BaseResponse();
+    }
+
     private void validate(ServiceDto serviceDto) throws Exception{
         Validate.notEmpty(serviceDto.getIp(), "ip can not be null");
         Validate.notEmpty(serviceDto.getPort(), "port can not be null");

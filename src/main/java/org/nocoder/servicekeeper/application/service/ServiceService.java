@@ -18,11 +18,14 @@ public interface ServiceService {
     @Transactional(rollbackFor = Exception.class)
     int update(ServiceDto dto);
 
+    @Transactional(rollbackFor = Exception.class)
+    int updateServiceStatus(Integer id, String status);
+
     /**
      * execute command
      * @param command
      */
-    void executeCommand(Command command);
+    void executeCommand(Integer id, Command command);
 
     void bindCommand(Service service, Command command);
 }

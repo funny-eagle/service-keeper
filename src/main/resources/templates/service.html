@@ -73,8 +73,8 @@
                         "<td>" + res.data[i].port + "</td>" +
                         "<td>" + res.data[i].status + "</td>" +
                         "<td width='150px;'>" +
-                        "<div class=\"btn-group\">\n" +
-                        "  <button type=\"button\" class=\"btn btn-xs btn-default\"><span class='glyphicon glyphicon-play-circle'></span> 发布最新版</button>\n" +
+                        "<div class=\"btn-group\">\n" + // href='/service/deploy/"+res.data[i].id +"'
+                        "  <a onclick='deploy("+res.data[i].id +")' class=\"btn btn-xs btn-default\"><span class='glyphicon glyphicon-play-circle'></span> 发布最新版</a>\n" +
                         "  <button type=\"button\" class=\"btn btn-xs btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
                         "    <span class=\"caret\"></span>\n" +
                         "    <span class=\"sr-only\">Toggle Dropdown</span>\n" +
@@ -110,6 +110,17 @@
             }
         });
     });
+
+    function deploy(id){
+        $.ajax({
+            type: "get",
+            url: "/service/deploy/"+id,
+            success: function (res) {
+                console.log("deploy method called.");
+                location.reload();
+            }
+        });
+    }
 </script>
 </body>
 </html>

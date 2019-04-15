@@ -1,18 +1,19 @@
 package org.nocoder.servicekeeper.application.dto;
 
 public class ServerDto {
-    private int id;
+    private Integer id;
     private String name;
     private String ip;
     private String port;
+    private String protocol;
     private String user;
     private String password;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -54,5 +55,13 @@ public class ServerDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 }

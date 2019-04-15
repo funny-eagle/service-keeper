@@ -1,17 +1,21 @@
 package org.nocoder.servicekeeper.api.controller;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.nocoder.servicekeeper.application.dto.ServerDto;
 import org.nocoder.servicekeeper.application.service.ServerService;
 import org.nocoder.servicekeeper.common.BaseResponse;
+import org.nocoder.servicekeeper.common.ssh.Certification;
+import org.nocoder.servicekeeper.common.ssh.SshClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/server")
@@ -27,16 +31,73 @@ public class ServerController {
     }
 
     /**
-     * insert server
+     * insert or update server
      * @return
      */
     @PostMapping("")
-    public BaseResponse saveServer(@ModelAttribute ServerDto serverDto){
-        logger.info(serverDto.getIp());
-        logger.info(serverDto.getName());
-        logger.info(serverDto.getPassword());
-        //serverService.insert();
+    public BaseResponse save(ServerDto serverDto) throws Exception{
+        validate(serverDto);
+        if(serverDto.getId() == null){
+            serverService.insert(serverDto);
+        }else {
+            serverService.update(serverDto);
+        }
         return new BaseResponse();
+    }
+
+    /**
+     * update server
+     * @return
+     */
+    @PutMapping("")
+    public BaseResponse update(ServerDto serverDto) throws Exception{
+        validate(serverDto);
+        serverService.update(serverDto);
+        return new BaseResponse();
+    }
+
+    @PostMapping("/test")
+    @ResponseBody
+    public BaseResponse test(ServerDto serverDto) throws Exception{
+        logger.info("test server connection " + serverDto.getIp());
+
+        Certification certification = new Certification();
+        certification.setHost(serverDto.getIp());
+        certification.setPort(Integer.parseInt(serverDto.getPort()));
+        certification.setUser(serverDto.getUser());
+        certification.setPassword(serverDto.getPassword());
+
+        String result = SshClient.execCommand(certification, "df -h");
+        Map<String, String> map = new HashMap<>(1);
+        if(StringUtils.isNotBlank(result)){
+            map.put("message", "连接成功！");
+        }else{
+            map.put("message", "连接失败！");
+        }
+        return new BaseResponse(map);
+    }
+
+    private void validate(ServerDto serverDto) throws Exception{
+        Validate.notEmpty(serverDto.getIp());
+        Validate.notEmpty(serverDto.getName());
+        Validate.notEmpty(serverDto.getPort());
+        Validate.notEmpty(serverDto.getPassword());
+        Validate.notEmpty(serverDto.getUser());
+        Validate.notEmpty(serverDto.getProtocol());
+    }
+
+    @GetMapping("/list")
+    @ResponseBody
+    public BaseResponse<List<ServerDto>> list(){
+        List<ServerDto> serverDtoList = serverService.getAllServers();
+        return new BaseResponse<>(serverDtoList);
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public BaseResponse<ServerDto> getById(@PathVariable("id") Integer id){
+        ServerDto dto = serverService.getById(id);
+        return new BaseResponse<>(dto);
     }
 
 }

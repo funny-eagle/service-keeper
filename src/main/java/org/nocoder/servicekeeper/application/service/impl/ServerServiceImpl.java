@@ -31,14 +31,27 @@ public class ServerServiceImpl implements ServerService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int update(ServerDto serverDto) {
+        Server server = assembler.convertToServer(serverDto);
+        return serverRepository.update(server);
+    }
+
+    @Override
     public List<ServerDto> getAllServers() {
         List<Server> serverList = serverRepository.getAll();
-        List<ServerDto> serverDtoList = assembler.converToDtoList(serverList);
+        List<ServerDto> serverDtoList = assembler.convertToDtoList(serverList);
         return serverDtoList;
     }
 
     @Override
     public int delete(int id) {
         return 0;
+    }
+
+    @Override
+    public ServerDto getById(Integer id) {
+        Server server = serverRepository.getById(id);
+        return assembler.convertToDto(server);
     }
 }

@@ -14,7 +14,7 @@ public class SshClient {
     
     private static Logger logger = LoggerFactory.getLogger(SshClient.class);
 
-    public static void execCommand(Certification c, String command){
+    public static String execCommand(Certification c, String command){
         try {
             JSch jsch = new JSch();
             Session session = jsch.getSession(c.getUser(), c.getHost(), c.getPort());
@@ -35,7 +35,7 @@ public class SshClient {
                     logger.info("connected to ssh server.");
                 }catch (Exception ee){
                     logger.info("retry ssh connection failed.");
-                    return;
+                    return null;
                 }
             }
 
@@ -50,6 +50,7 @@ public class SshClient {
 
             channel.connect();
 
+            StringBuilder sb = new StringBuilder();
             byte[] bytes = new byte[1024];
             while (true) {
                 while (in.available() > 0) {
@@ -57,7 +58,9 @@ public class SshClient {
                     if (i < 0) {
                         break;
                     }
-                    System.out.print(new String(bytes, 0, i));
+                    String s = new String(bytes, 0, i);
+                    logger.info(s);
+                    sb.append(s);
                 }
                 if (channel.isClosed()) {
                     if (in.available() > 0) {
@@ -69,9 +72,11 @@ public class SshClient {
             }
             channel.disconnect();
             session.disconnect();
+            return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 

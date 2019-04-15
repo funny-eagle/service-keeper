@@ -35,7 +35,7 @@ public class ServerAssembler {
         return dto;
     }
 
-    public List<ServerDto> converToDtoList(List<Server> serverList) {
+    public List<ServerDto> convertToDtoList(List<Server> serverList) {
         if (CollectionUtils.isEmpty(serverList)) {
             return Collections.emptyList();
         }

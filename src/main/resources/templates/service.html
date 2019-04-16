@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-md-12">
             <a class="btn btn-xs btn-primary" id="btn-create-service" href="service/detail">
-                <span class="glyphicon glyphicon-plus"></span>  新建服务
+                <span class="glyphicon glyphicon-plus"></span>  Create Service
             </a>
         </div>
     </div>
@@ -38,11 +38,11 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>名称</th>
-                    <th>主机</th>
-                    <th>端口</th>
-                    <th>状态</th>
-                    <th>操作</th>
+                    <th>Service Name</th>
+                    <th>Host</th>
+                    <th>Port</th>
+                    <th>Status</th>
+                    <th>Operation</th>
                 </tr>
                 </thead>
                 <tbody id="server-tbody">
@@ -69,22 +69,22 @@
                         "<tr>" +
                         "<td width='10px;'>" + (i + 1) + "</td>" +
                         "<td><a href='/service/detail/"+res.data[i].id+"'>" + res.data[i].name + "<a/> </td>" +
-                        "<td>" + res.data[i].ip + "</td>" +
+                        "<td>" + res.data[i].hostname + "</td>" +
                         "<td>" + res.data[i].port + "</td>" +
                         "<td>" + res.data[i].status + "</td>" +
-                        "<td width='150px;'>" +
+                        "<td width='200px;'>" +
                         "<div class=\"btn-group\">\n" + // href='/service/deploy/"+res.data[i].id +"'
-                        "  <a onclick='deploy("+res.data[i].id +")' class=\"btn btn-xs btn-default\"><span class='glyphicon glyphicon-play-circle'></span> 发布最新版</a>\n" +
+                        "  <a onclick='deploy("+res.data[i].id +")' class=\"btn btn-xs btn-default\"><span class='glyphicon glyphicon-play-circle'></span> Deploy Latest Version</a>\n" +
                         "  <button type=\"button\" class=\"btn btn-xs btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
                         "    <span class=\"caret\"></span>\n" +
                         "    <span class=\"sr-only\">Toggle Dropdown</span>\n" +
                         "  </button>\n" +
                         "  <ul class=\"dropdown-menu\">\n" +
-                        "    <li><a href=\"#\"><span class='glyphicon glyphicon-off'></span> 停止服务</a></li>\n" +
+                        "    <li><a href=\"#\"><span class='glyphicon glyphicon-off'></span> Stop Service</a></li>\n" +
                         "    <li role=\"separator\" class=\"divider\"></li>\n" +
-                        "    <li><a href=\"#\"><span class='glyphicon glyphicon-repeat'></span> 重启服务</a></li>\n" +
+                        "    <li><a href=\"#\"><span class='glyphicon glyphicon-repeat'></span> Restart Service</a></li>\n" +
                         "    <li role=\"separator\" class=\"divider\"></li>\n" +
-                        "    <li><a href=\"/service/detail/"+ res.data[i].id +"\" + "+"><span class='glyphicon glyphicon-cog'></span> 配置</a></li>\n" +
+                        "    <li><a href=\"/service/detail/"+ res.data[i].id +"\" + "+"><span class='glyphicon glyphicon-cog'></span> Configuration</a></li>\n" +
                         "  </ul>\n" +
                         "</div>" +
                         "</td>" +

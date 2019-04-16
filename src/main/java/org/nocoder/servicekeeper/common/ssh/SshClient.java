@@ -4,7 +4,10 @@ import com.jcraft.jsch.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ssh client
@@ -14,7 +17,7 @@ public class SshClient {
     
     private static Logger logger = LoggerFactory.getLogger(SshClient.class);
 
-    public static String execCommand(Certification c, String command){
+    public static List<String> execCommands(Certification c, List<String> commandList){
         try {
             JSch jsch = new JSch();
             Session session = jsch.getSession(c.getUser(), c.getHost(), c.getPort());
@@ -39,44 +42,59 @@ public class SshClient {
                 }
             }
 
-            Channel channel = session.openChannel("exec");
-            ((ChannelExec) channel).setCommand(command);
-            logger.info("start to execute command: {}", command);
-            channel.setInputStream(null);
-
-            ((ChannelExec) channel).setErrStream(System.err);
-
-            InputStream in = channel.getInputStream();
-
-            channel.connect();
-
-            StringBuilder sb = new StringBuilder();
-            byte[] bytes = new byte[1024];
-            while (true) {
-                while (in.available() > 0) {
-                    int i = in.read(bytes, 0, 1024);
-                    if (i < 0) {
-                        break;
-                    }
-                    String s = new String(bytes, 0, i);
-                    logger.info(s);
-                    sb.append(s);
+            List list = new ArrayList();
+            commandList.forEach(command -> {
+                try {
+                    StringBuilder executeResult = executeCommand(session, command);
+                    list.add(executeResult.toString());
+                } catch (JSchException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                if (channel.isClosed()) {
-                    if (in.available() > 0) {
-                        continue;
-                    }
-                    logger.info("ssh connection closed, exist-status={}", channel.getExitStatus());
-                    break;
-                }
-            }
-            channel.disconnect();
+            });
             session.disconnect();
-            return sb.toString();
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private static StringBuilder executeCommand(Session session, String command) throws JSchException, IOException {
+        Channel channel = session.openChannel("exec");
+        ((ChannelExec) channel).setCommand(command);
+        logger.info("start to execute command: {}", command);
+        channel.setInputStream(null);
+
+        ((ChannelExec) channel).setErrStream(System.err);
+
+        InputStream in = channel.getInputStream();
+
+        channel.connect();
+
+        StringBuilder executeResult = new StringBuilder();
+        byte[] bytes = new byte[1024];
+        while (true) {
+            while (in.available() > 0) {
+                int i = in.read(bytes, 0, 1024);
+                if (i < 0) {
+                    break;
+                }
+                String s = new String(bytes, 0, i);
+                logger.info(s);
+                executeResult.append(s);
+            }
+            if (channel.isClosed()) {
+                if (in.available() > 0) {
+                    continue;
+                }
+                logger.info("channel is closed, exist-status={}", channel.getExitStatus());
+                break;
+            }
+        }
+        channel.disconnect();
+        return executeResult;
     }
 
 
@@ -86,6 +104,9 @@ public class SshClient {
         certification.setPort(22);
         certification.setUser("jason");
         certification.setPassword("jasonyang");
-        SshClient.execCommand(certification, "ps aux | grep java");
+        List<String> commondList = new ArrayList<>();
+        commondList.add("abcdedfg");
+        commondList.add("df -h");
+        SshClient.execCommands(certification, commondList);
     }
 }

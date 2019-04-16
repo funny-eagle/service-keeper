@@ -1,5 +1,9 @@
 package org.nocoder.servicekeeper.application.dto;
 
+/**
+ * user dto
+ * @author jason
+ */
 public class UserDto {
     private int id;
     private String name;

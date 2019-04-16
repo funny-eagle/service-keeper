@@ -1,8 +1,6 @@
 package org.nocoder.servicekeeper.application.service;
 
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
-import org.nocoder.servicekeeper.domain.modal.Command;
-import org.nocoder.servicekeeper.domain.modal.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,9 +21,9 @@ public interface ServiceService {
 
     /**
      * execute command
-     * @param command
+     *
+     * @param commandList
      */
-    void executeCommand(Integer id, Command command);
+    void executeCommand(Integer serverId, List<String> commandList);
 
-    void bindCommand(Service service, Command command);
 }

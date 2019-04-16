@@ -38,7 +38,7 @@ CREATE TABLE "deploy_log" (
 "id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "service_name"  TEXT,
 "service_version"  TEXT,
-"ip"  TEXT,
+"serverId"  TEXT,
 "deploy_time"  TEXT,
 "operator"  TEXT
 );
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS "main"."server";
 CREATE TABLE "server" (
 "id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "name"  TEXT,
-"ip"  TEXT,
+"serverId"  TEXT,
 "port"  TEXT,
 "user"  TEXT,
 "password"  TEXT
@@ -63,7 +63,7 @@ DROP TABLE IF EXISTS "main"."service";
 CREATE TABLE "service" (
 "id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "name"  TEXT,
-"ip"  TEXT,
+"serverId"  TEXT,
 "port"  TEXT,
 "docker_image_name"  TEXT,
 "docker_image_tag"  TEXT,

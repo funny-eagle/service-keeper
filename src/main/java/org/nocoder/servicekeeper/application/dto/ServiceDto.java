@@ -1,9 +1,13 @@
 package org.nocoder.servicekeeper.application.dto;
 
+/**
+ * service dto
+ * @author jason
+ */
 public class ServiceDto {
     private Integer id;
     private String name;
-    private String ip;
+    private Integer serverId;
     private String port;
     private String dockerImageName;
     private String dockerImageTag;
@@ -16,6 +20,15 @@ public class ServiceDto {
     private String status;
     private String createTime;
     private String updateTime;
+    private String hostname;
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
 
     public Integer getId() {
         return id;
@@ -33,12 +46,12 @@ public class ServiceDto {
         this.name = name;
     }
 
-    public String getIp() {
-        return ip;
+    public Integer getServerId() {
+        return serverId;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setServerId(Integer serverId) {
+        this.serverId = serverId;
     }
 
     public String getPort() {

@@ -12,13 +12,14 @@ import java.util.List;
 
 /**
  * service assembler
+ *
  * @author YangJinlong
  */
 @Component
 public class ServiceAssembler {
 
     public ServiceDto convertToDto(Service service) {
-        if(service == null){
+        if (service == null) {
             return null;
         }
         ServiceDto dto = new ServiceDto();
@@ -26,8 +27,8 @@ public class ServiceAssembler {
         return dto;
     }
 
-    public List<ServiceDto> convertToDtoList(List<Service> serviceList){
-        if(CollectionUtils.isEmpty(serviceList)){
+    public List<ServiceDto> convertToDtoList(List<Service> serviceList) {
+        if (CollectionUtils.isEmpty(serviceList)) {
             return Collections.emptyList();
         }
         List<ServiceDto> serviceDtoList = new ArrayList<>();
@@ -36,7 +37,7 @@ public class ServiceAssembler {
     }
 
     public Service convertToService(ServiceDto dto) {
-        if(dto == null){
+        if (dto == null) {
             return null;
         }
         Service service = new Service();

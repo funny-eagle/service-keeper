@@ -1,17 +1,20 @@
 package org.nocoder.servicekeeper.api.controller;
 
 import org.apache.commons.lang3.Validate;
+import org.nocoder.servicekeeper.application.dto.ServerDto;
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
+import org.nocoder.servicekeeper.application.service.ServerService;
 import org.nocoder.servicekeeper.application.service.ServiceService;
 import org.nocoder.servicekeeper.common.BaseResponse;
+import org.nocoder.servicekeeper.common.Enumeration.ServiceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/service")
@@ -21,6 +24,8 @@ public class ServiceController {
 
     @Resource
     private ServiceService serviceService;
+    @Resource
+    private ServerService serverService;
 
     @GetMapping("")
     public String toService() {
@@ -31,6 +36,8 @@ public class ServiceController {
     public ModelAndView detail() {
         ModelAndView modelAndView = new ModelAndView("service-detail");
         modelAndView.addObject(new ServiceDto());
+        List<ServerDto> servers = serverService.getAllServers();
+        modelAndView.addObject("servers", servers);
         return modelAndView;
     }
 
@@ -39,6 +46,10 @@ public class ServiceController {
         ServiceDto dto = serviceService.getById(id);
         ModelAndView modelAndView = new ModelAndView("service-detail");
         modelAndView.addObject(dto);
+
+        List<ServerDto> servers = serverService.getAllServers();
+        modelAndView.addObject("servers", servers);
+
         return modelAndView;
     }
 
@@ -55,7 +66,7 @@ public class ServiceController {
      */
     @PostMapping("")
     @ResponseBody
-    public BaseResponse insert(ServiceDto serviceDto) throws Exception{
+    public BaseResponse insert(ServiceDto serviceDto) throws Exception {
         validate(serviceDto);
         serviceService.insert(serviceDto);
         return new BaseResponse();
@@ -68,7 +79,7 @@ public class ServiceController {
      */
     @PutMapping("")
     @ResponseBody
-    public BaseResponse update(ServiceDto serviceDto) throws Exception{
+    public BaseResponse update(ServiceDto serviceDto) throws Exception {
         validate(serviceDto);
         serviceService.update(serviceDto);
         return new BaseResponse();
@@ -77,16 +88,17 @@ public class ServiceController {
 
     @GetMapping("/deploy/{id}")
     @ResponseBody
-    public BaseResponse deploy(@PathVariable("id") Integer id){
+    public BaseResponse deploy(@PathVariable("id") Integer id) {
         logger.info("controller deploy start");
-        serviceService.updateServiceStatus(id, "PENDING");
-        serviceService.executeCommand(id,null);
+        serviceService.updateServiceStatus(id, ServiceStatus.PENDING.status());
+        serviceService.executeCommand(id, null);
+        serviceService.updateServiceStatus(id, ServiceStatus.RUNNING.status());
         logger.info("controller deploy end");
         return new BaseResponse();
     }
 
-    private void validate(ServiceDto serviceDto) throws Exception{
-        Validate.notEmpty(serviceDto.getIp(), "ip can not be null");
+    private void validate(ServiceDto serviceDto) throws Exception {
+        Validate.notNull(serviceDto.getServerId(), "ip can not be null");
         Validate.notEmpty(serviceDto.getPort(), "port can not be null");
         Validate.notEmpty(serviceDto.getName(), "name can not be null");
         Validate.notEmpty(serviceDto.getName(), "name can not be null");

@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * server assembler
+ *
  * @author YangJinlong
  */
 @Component

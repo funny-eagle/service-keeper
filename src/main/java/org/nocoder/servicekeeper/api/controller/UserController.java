@@ -19,7 +19,7 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public BaseResponse getById(@PathVariable("id") int id){
+    public BaseResponse getById(@PathVariable("id") int id) {
         return new BaseResponse(userService.getById(id));
     }
 

@@ -23,7 +23,7 @@
 
 <div class="container theme-showcase" role="main">
     <div class="page-header">
-        <h3>Server List</h3>
+        <h3>Server Connection List</h3>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -107,6 +107,8 @@
         modal.find('.modal-title').html(recipient)
     });
     $(document).ready(function () {
+        $("#sk-nav li").removeClass("active");
+        $("#server-li").addClass("active");
         $("#server-tbody").html("loading...");
         getServerList();
     });

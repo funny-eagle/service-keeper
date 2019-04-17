@@ -6,7 +6,6 @@ package org.nocoder.servicekeeper.domain.modal;
 public class Service {
     private Integer id;
     private String name;
-    private Integer serverId;
     private String port;
     private String dockerImageName;
     private String dockerImageTag;
@@ -16,6 +15,7 @@ public class Service {
     private String dockerStartCommand;
     private String dockerStopCommand;
     private String dockerRestartCommand;
+    private String dockerRmCommand;
     private String status;
     private String createTime;
     private String updateTime;
@@ -43,14 +43,6 @@ public class Service {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getServerId() {
-        return serverId;
-    }
-
-    public void setServerId(Integer serverId) {
-        this.serverId = serverId;
     }
 
     public String getPort() {
@@ -147,5 +139,13 @@ public class Service {
 
     public void setDockerRestartCommand(String dockerRestartCommand) {
         this.dockerRestartCommand = dockerRestartCommand;
+    }
+
+    public String getDockerRmCommand() {
+        return dockerRmCommand;
+    }
+
+    public void setDockerRmCommand(String dockerRmCommand) {
+        this.dockerRmCommand = dockerRmCommand;
     }
 }

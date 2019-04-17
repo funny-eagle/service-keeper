@@ -14,8 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * service controller
+ *
+ * @author jason
+ */
 @Controller
 @RequestMapping("/service")
 public class ServiceController {
@@ -73,7 +79,7 @@ public class ServiceController {
     }
 
     /**
-     * insert server
+     * update server
      *
      * @return
      */
@@ -86,19 +92,34 @@ public class ServiceController {
     }
 
 
+    /**
+     * deploy latest version
+     *
+     * @param serviceId
+     * @return
+     */
     @GetMapping("/deploy/{id}")
     @ResponseBody
-    public BaseResponse deploy(@PathVariable("id") Integer id) {
+    public BaseResponse deploy(@PathVariable("id") Integer serviceId) {
         logger.info("controller deploy start");
-        serviceService.updateServiceStatus(id, ServiceStatus.PENDING.status());
-        serviceService.executeCommand(id, null);
-        serviceService.updateServiceStatus(id, ServiceStatus.RUNNING.status());
+        ServiceDto serviceDto = serviceService.getById(serviceId);
+        // TODO assemble command list
+        List<String> commandList = new ArrayList<>();
+        // pull the latest docker image
+        commandList.add(serviceDto.getDockerPullCommand());
+        // stop the current docker container
+        commandList.add(serviceDto.getDockerStopCommand());
+        // remove the stopped docker container
+        commandList.add(serviceDto.getDockerRmCommand());
+        // run the new docker container
+        commandList.add(serviceDto.getDockerRunCommand());
+        serviceService.executeCommand(serviceId, null);
+        serviceService.updateServiceStatus(serviceId, ServiceStatus.RUNNING.status());
         logger.info("controller deploy end");
         return new BaseResponse();
     }
 
     private void validate(ServiceDto serviceDto) throws Exception {
-        Validate.notNull(serviceDto.getServerId(), "ip can not be null");
         Validate.notEmpty(serviceDto.getPort(), "port can not be null");
         Validate.notEmpty(serviceDto.getName(), "name can not be null");
         Validate.notEmpty(serviceDto.getName(), "name can not be null");

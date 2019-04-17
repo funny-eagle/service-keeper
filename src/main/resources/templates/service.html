@@ -39,9 +39,9 @@
                 <tr>
                     <th>#</th>
                     <th>Service Name</th>
-                    <th>Host</th>
                     <th>Port</th>
-                    <th>Status</th>
+                    <th>Docker Image</th>
+                    <th>Docker Container</th>
                     <th>Operation</th>
                 </tr>
                 </thead>
@@ -53,6 +53,8 @@
 </div>
 <script>
     $(document).ready(function () {
+        $("#sk-nav li").removeClass("active");
+        $("#service-li").addClass("active");
         getServiceList();
     });
 
@@ -69,25 +71,10 @@
                         "<tr>" +
                         "<td width='10px;'>" + (i + 1) + "</td>" +
                         "<td><a href='/service/detail/"+res.data[i].id+"'>" + res.data[i].name + "<a/> </td>" +
-                        "<td>" + res.data[i].hostname + "</td>" +
                         "<td>" + res.data[i].port + "</td>" +
-                        "<td>" + res.data[i].status + "</td>" +
-                        "<td width='200px;'>" +
-                        "<div class=\"btn-group\">\n" + // href='/service/deploy/"+res.data[i].id +"'
-                        "  <a onclick='deploy("+res.data[i].id +")' class=\"btn btn-xs btn-default\"><span class='glyphicon glyphicon-play-circle'></span> Deploy Latest Version</a>\n" +
-                        "  <button type=\"button\" class=\"btn btn-xs btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
-                        "    <span class=\"caret\"></span>\n" +
-                        "    <span class=\"sr-only\">Toggle Dropdown</span>\n" +
-                        "  </button>\n" +
-                        "  <ul class=\"dropdown-menu\">\n" +
-                        "    <li><a href=\"#\"><span class='glyphicon glyphicon-off'></span> Stop Service</a></li>\n" +
-                        "    <li role=\"separator\" class=\"divider\"></li>\n" +
-                        "    <li><a href=\"#\"><span class='glyphicon glyphicon-repeat'></span> Restart Service</a></li>\n" +
-                        "    <li role=\"separator\" class=\"divider\"></li>\n" +
-                        "    <li><a href=\"/service/detail/"+ res.data[i].id +"\" + "+"><span class='glyphicon glyphicon-cog'></span> Configuration</a></li>\n" +
-                        "  </ul>\n" +
-                        "</div>" +
-                        "</td>" +
+                        "<td>" + res.data[i].dockerImageName + ":" + res.data[i].dockerImageTag + "</td>" +
+                        "<td>"+ res.data[i].dockerContainerName +"</td>"+
+                        "<td><a href='/service/detail/" +res.data[i].id + "'>Edit Service</a></td>" +
                         "</tr>" + ""
                     );
                 }

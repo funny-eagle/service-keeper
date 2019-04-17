@@ -19,11 +19,4 @@ public interface ServiceService {
     @Transactional(rollbackFor = Exception.class)
     int updateServiceStatus(Integer id, String status);
 
-    /**
-     * execute command
-     *
-     * @param commandList
-     */
-    void executeCommand(Integer serverId, List<String> commandList);
-
 }

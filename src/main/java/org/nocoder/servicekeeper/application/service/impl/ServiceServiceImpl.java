@@ -3,11 +3,7 @@ package org.nocoder.servicekeeper.application.service.impl;
 import org.nocoder.servicekeeper.application.assembler.ServiceAssembler;
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
 import org.nocoder.servicekeeper.application.service.ServiceService;
-import org.nocoder.servicekeeper.common.ssh.Certification;
-import org.nocoder.servicekeeper.common.ssh.SshClient;
-import org.nocoder.servicekeeper.domain.modal.Server;
 import org.nocoder.servicekeeper.domain.modal.Service;
-import org.nocoder.servicekeeper.infrastructure.repository.ServerRepository;
 import org.nocoder.servicekeeper.infrastructure.repository.ServiceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Service service
+ * @author jason
  */
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService {
@@ -31,11 +27,6 @@ public class ServiceServiceImpl implements ServiceService {
     @Resource
     private ServiceRepository serviceRepository;
 
-    @Resource
-    private ServerRepository serverRepository;
-
-    @Resource
-    private ThreadPoolExecutor threadPoolExecutor;
 
     @Override
     public ServiceDto getById(int id) {
@@ -67,22 +58,6 @@ public class ServiceServiceImpl implements ServiceService {
     @Transactional(rollbackFor = Exception.class)
     public int updateServiceStatus(Integer id, String status) {
         return serviceRepository.updateServiceStatus(id, status);
-    }
-
-
-    @Override
-    public void executeCommand(Integer serverId, List<String> commandList) {
-        threadPoolExecutor.execute(() -> {
-            Server server = serverRepository.getById(serverId);
-            logger.info("start to execute command...");
-            Certification certification = new Certification();
-            certification.setHost(server.getIp());
-            certification.setPort(Integer.parseInt(server.getPort()));
-            certification.setUser(server.getUser());
-            certification.setPassword(server.getPassword());
-            List<String> resultList = SshClient.execCommands(certification, commandList);
-            logger.info("execute command finished!");
-        });
     }
 
 }

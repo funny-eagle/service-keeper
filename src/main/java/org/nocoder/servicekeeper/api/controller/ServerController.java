@@ -59,6 +59,7 @@ public class ServerController {
     @PostMapping("/test")
     @ResponseBody
     public BaseResponse test(ServerDto serverDto) throws Exception {
+        validate(serverDto);
         logger.info("test server connection " + serverDto.getIp());
 
         List<String> result = serverService.testConnection(serverDto);

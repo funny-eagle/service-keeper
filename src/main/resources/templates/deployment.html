@@ -29,18 +29,18 @@
         <div class="col-md-12">
             <br>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deploymentPlanModal">
                 <span class="glyphicon glyphicon-plus"></span> Create Deployment Plan
             </button>
             <br>
             <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade" id="deploymentPlanModal" tabindex="-1" role="dialog" aria-labelledby="deploymentPlanModalLabel">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Create Deployment Plan</h4>
+                            <h4 class="modal-title" id="deploymentPlanModalLabel">Create Deployment Plan</h4>
                         </div>
                         <div class="modal-body">
                             <div class="row">
@@ -49,11 +49,11 @@
                                         <div class="panel-heading">
                                             <h3 class="panel-title">Service List</h3>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="checkbox">
-                                                    <label><input type="checkbox">book-service</label>
-                                                </div>
+                                        <div id="service-panel" class="panel-body">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox"> service
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -63,70 +63,10 @@
                                         <div class="panel-heading">
                                             <h3 class="panel-title">Server List</h3>
                                         </div>
-                                        <div class="panel-body">
+                                        <div id="server-panel" class="panel-body">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> test(192.168.28.155)
+                                                    <input type="checkbox"> server
                                                 </label>
                                             </div>
                                         </div>
@@ -137,7 +77,9 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save</button>
+                            <button id="btn-save-deployment-plan" type="button" class="btn btn-primary">Save Deployment
+                                Plan
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -158,498 +100,6 @@
     <div id="deploy-by-service">
         <div class="row">
             <h3></h3>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">book-service</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>
-                            <button type="button" class="btn btn-xs btn-primary">Deploy</button>
-                            <button type="button" class="btn btn-xs btn-success">Start</button>
-                            <button type="button" class="btn btn-xs btn-info">Info</button>
-                            <button type="button" class="btn btn-xs btn-warning">Restart</button>
-                            <button type="button" class="btn btn-xs btn-danger">Stop</button>
-                        </p>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Server</th>
-                                <th>Docker Image</th>
-                                <th>Status</th>
-                                <th>Operation</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.1</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.2</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.3</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">book-service</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>
-                            <button type="button" class="btn btn-xs btn-primary">Deploy</button>
-                            <button type="button" class="btn btn-xs btn-success">Start</button>
-                            <button type="button" class="btn btn-xs btn-info">Info</button>
-                            <button type="button" class="btn btn-xs btn-warning">Restart</button>
-                            <button type="button" class="btn btn-xs btn-danger">Stop</button>
-                        </p>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Server</th>
-                                <th>Docker Image</th>
-                                <th>Status</th>
-                                <th>Operation</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.1</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.2</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.3</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">book-service</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>
-                            <button type="button" class="btn btn-xs btn-primary">Deploy</button>
-                            <button type="button" class="btn btn-xs btn-success">Start</button>
-                            <button type="button" class="btn btn-xs btn-info">Info</button>
-                            <button type="button" class="btn btn-xs btn-warning">Restart</button>
-                            <button type="button" class="btn btn-xs btn-danger">Stop</button>
-                        </p>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Server</th>
-                                <th>Docker Image</th>
-                                <th>Status</th>
-                                <th>Operation</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.1</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.2</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.3</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">book-service</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>
-                            <button type="button" class="btn btn-xs btn-primary">Deploy</button>
-                            <button type="button" class="btn btn-xs btn-success">Start</button>
-                            <button type="button" class="btn btn-xs btn-info">Info</button>
-                            <button type="button" class="btn btn-xs btn-warning">Restart</button>
-                            <button type="button" class="btn btn-xs btn-danger">Stop</button>
-                        </p>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Server</th>
-                                <th>Docker Image</th>
-                                <th>Status</th>
-                                <th>Operation</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.1</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.2</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.3</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">book-service</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>
-                            <button type="button" class="btn btn-xs btn-primary">Deploy</button>
-                            <button type="button" class="btn btn-xs btn-success">Start</button>
-                            <button type="button" class="btn btn-xs btn-info">Info</button>
-                            <button type="button" class="btn btn-xs btn-warning">Restart</button>
-                            <button type="button" class="btn btn-xs btn-danger">Stop</button>
-                        </p>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Server</th>
-                                <th>Docker Image</th>
-                                <th>Status</th>
-                                <th>Operation</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.1</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.2</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>192.168.1.3</td>
-                                <td>book-service:1.0</td>
-                                <td><span class="label label-danger">Stop</span></td>
-                                <td><!-- Split button -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs">Deploy</button>
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -951,40 +401,115 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $("#sk-nav li").removeClass("active");
-            $("#deployment-li").addClass("active");
-        });
+</div>
+<script>
+    $(document).ready(function () {
+        $("#sk-nav li").removeClass("active");
+        $("#deployment-li").addClass("active");
+        getServiceList();
+        getServerList();
+    });
 
-        $("#deploy-by-service-li").click(function () {
-            $("#deploy-by-server").addClass("hidden");
-            $("#deploy-by-server-li").removeClass("active");
-            $("#deploy-by-service").removeClass("hidden");
-            $("#deploy-by-service-li").addClass("active")
-        });
+    $("#deploy-by-service-li").click(function () {
+        $("#deploy-by-server").addClass("hidden");
+        $("#deploy-by-server-li").removeClass("active");
+        $("#deploy-by-service").removeClass("hidden");
+        $("#deploy-by-service-li").addClass("active")
+    });
 
-        $("#deploy-by-server-li").click(function () {
-            $("#deploy-by-service").addClass("hidden");
-            $("#deploy-by-service-li").removeClass("active");
-            $("#deploy-by-server").removeClass("hidden");
-            $("#deploy-by-server-li").addClass("active");
-        });
+    $("#deploy-by-server-li").click(function () {
+        $("#deploy-by-service").addClass("hidden");
+        $("#deploy-by-service-li").removeClass("active");
+        $("#deploy-by-server").removeClass("hidden");
+        $("#deploy-by-server-li").addClass("active");
+    });
 
-        // "<div class=\"btn-group\">\n" + // href='/service/deploy/"+res.data[i].id +"'
-        // "  <a onclick='deploy("+res.data[i].id +")' class=\"btn btn-xs btn-default\"><span class='glyphicon glyphicon-play-circle'></span> Deploy Latest Version</a>\n" +
-        // "  <button type=\"button\" class=\"btn btn-xs btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
-        // "    <span class=\"caret\"></span>\n" +
-        // "    <span class=\"sr-only\">Toggle Dropdown</span>\n" +
-        // "  </button>\n" +
-        // "  <ul class=\"dropdown-menu\">\n" +
-        // "    <li><a href=\"#\"><span class='glyphicon glyphicon-off'></span> <span class="label label-danger">Stop</span> Service</a></li>\n" +
-        // "    <li role=\"separator\" class=\"divider\"></li>\n" +
-        // "    <li><a href=\"#\"><span class='glyphicon glyphicon-repeat'></span> Restart Service</a></li>\n" +
-        // "    <li role=\"separator\" class=\"divider\"></li>\n" +
-        // "    <li><a href=\"/service/detail/"+ res.data[i].id +"\" + "+"><span class='glyphicon glyphicon-cog'></span> Configuration</a></li>\n" +
-        // "  </ul>\n" +
-        // "</div>" +
-    </script>
+    function getServiceList() {
+        $("#service-panel").html("");
+        // loading image...
+        $.ajax({
+            type: "get",
+            url: "service/list",
+            dataType: "json",
+            success: function (res) {
+                for (var i = 0; i < res.data.length; i++) {
+                    $("#service-panel").append(
+                        '<div class="checkbox">' +
+                        '<label>' +
+                        '<input value="' + res.data[i].id + '" type="checkbox" name="service-checkbox">' + res.data[i].name +
+                        '</label>' +
+                        '</div>'
+                    );
+                }
+            }
+        });
+    }
+
+    function getServerList() {
+        $("#server-panel").html("");
+        $.ajax({
+            type: "get",
+            url: "server/list",
+            dataType: "json",
+            success: function (res) {
+                for (var i = 0; i < res.data.length; i++) {
+                    $("#server-panel").append(
+                        '<div class="checkbox">' +
+                        '<label>' +
+                        '<input value="' + res.data[i].id + '" type="checkbox" name="server-checkbox">' + res.data[i].name +
+                        '</label>' +
+                        '</div>'
+                    );
+                }
+            }
+        });
+    }
+
+    $("#btn-save-deployment-plan").click(function () {
+        saveDeploymentPlan();
+    });
+
+    function saveDeploymentPlan() {
+        var data = assembleMappingData();
+        console.log("data: "+JSON.stringify(data));
+        $.ajax({
+            type: "post",
+            contentType: 'application/json',
+            url: "/deployment/deployment-plan",
+            dataType: "json",
+            data: JSON.stringify(data),
+            success: function (res) {
+                console.log(res.data);
+                $("#deploymentPlanModal").modal("hide");
+            }
+        });
+    }
+
+    function assembleMappingData() {
+        // get checked serviceId
+        var serviceArr = [];
+        $('input[name="service-checkbox"]:checked').each(function () {
+            serviceArr.push($(this).val());
+        });
+        // get checked serverId
+        var serverArr = [];
+        $('input[name="server-checkbox"]:checked').each(function () {
+            serverArr.push($(this).val());
+        });
+        console.log(serverArr.length);
+        // assemble server_service_mapping data
+        var data = [];
+        serviceArr.forEach(function (serviceId, serviceIdx) {
+            serverArr.forEach(function (serverId, serverIdx) {
+                var mapping = {};
+                mapping["serviceId"] = serviceId;
+                mapping["serverId"] = serverId;
+                data.push(mapping);
+            });
+        });
+        console.log("data.length: "+data.length);
+        return data;
+    }
+</script>
 </body>
 </html>

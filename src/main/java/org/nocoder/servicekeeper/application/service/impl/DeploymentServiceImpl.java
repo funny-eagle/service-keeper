@@ -51,17 +51,19 @@ public class DeploymentServiceImpl implements DeploymentService {
 
     @Override
     public int insert(ServerServiceMappingDto dto) {
-        return 0;
+        ServerServiceMapping mapping = assembler.convertToMapping(dto);
+        return serverServiceMappingRepository.insert(mapping);
     }
 
     @Override
     public int update(ServerServiceMappingDto dto) {
-        return 0;
+        ServerServiceMapping mapping = assembler.convertToMapping(dto);
+        return serverServiceMappingRepository.update(mapping);
     }
 
     @Override
     public int delete(Integer id) {
-        return 0;
+        return serverServiceMappingRepository.delete(id);
     }
 
     @Override
@@ -72,16 +74,21 @@ public class DeploymentServiceImpl implements DeploymentService {
 
     @Override
     public ServerServiceMappingDto selectById(Integer id) {
-        return null;
+        return assembler.convertToDto(serverServiceMappingRepository.getById(id));
     }
 
     @Override
     public List<ServerServiceMappingDto> selectByServiceId(Integer serviceId) {
-        return null;
+        return assembler.convertToDtoList(serverServiceMappingRepository.getByServiceId(serviceId));
     }
 
     @Override
     public List<ServerServiceMappingDto> selectByServerId(Integer serverId) {
-        return null;
+        return assembler.convertToDtoList(serverServiceMappingRepository.getByServerId(serverId));
+    }
+
+    @Override
+    public List<ServerServiceMappingDto> selectByServerIdAndServiceId(Integer serverId, Integer serviceId) {
+        return assembler.convertToDtoList(serverServiceMappingRepository.getByServerIdAndServiceId(serverId, serviceId));
     }
 }

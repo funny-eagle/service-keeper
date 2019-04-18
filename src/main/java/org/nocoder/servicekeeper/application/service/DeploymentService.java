@@ -24,4 +24,6 @@ public interface DeploymentService {
     List<ServerServiceMappingDto> selectByServiceId(Integer serviceId);
 
     List<ServerServiceMappingDto> selectByServerId(Integer serverId);
+
+    List<ServerServiceMappingDto> selectByServerIdAndServiceId(Integer serverId, Integer serviceId);
 }

@@ -17,18 +17,24 @@ import java.util.List;
 @Component
 public class ServerServiceMappingAssembler {
 
-    public ServerServiceMappingDto convertToDto(ServerServiceMapping mapping){
+    public ServerServiceMappingDto convertToDto(ServerServiceMapping mapping) {
         ServerServiceMappingDto dto = new ServerServiceMappingDto();
         BeanUtils.copyProperties(mapping, dto);
         return dto;
     }
 
-    public List<ServerServiceMappingDto> convertToDtoList(List<ServerServiceMapping> mappings){
-        if(CollectionUtils.isEmpty(mappings)){
+    public List<ServerServiceMappingDto> convertToDtoList(List<ServerServiceMapping> mappings) {
+        if (CollectionUtils.isEmpty(mappings)) {
             return Collections.emptyList();
         }
         List<ServerServiceMappingDto> dtoList = new ArrayList<>();
         mappings.forEach(mapping -> dtoList.add(convertToDto(mapping)));
         return dtoList;
+    }
+
+    public ServerServiceMapping convertToMapping(ServerServiceMappingDto dto) {
+        ServerServiceMapping mapping = new ServerServiceMapping();
+        BeanUtils.copyProperties(dto, mapping);
+        return mapping;
     }
 }

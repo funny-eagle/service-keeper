@@ -72,7 +72,7 @@ public class DeploymentController {
     public BaseResponse saveServerServiceMapping(@RequestBody List<ServerServiceMappingDto> dtos){
         Validate.notEmpty(dtos, "deployment plan can not be none");
         dtos.forEach(dto -> {
-            if(!CollectionUtils.isEmpty(deploymentService.selectByServerIdAndServiceId(dto.getServerId(), dto.getServiceId()))){
+            if(CollectionUtils.isEmpty(deploymentService.selectByServerIdAndServiceId(dto.getServerId(), dto.getServiceId()))){
                 dto.setServiceStatus(ServiceStatus.STOP.status());
                 ServiceDto serviceDto = serviceService.getById(dto.getServiceId());
                 dto.setServiceAlias(serviceDto.getName());

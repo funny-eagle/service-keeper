@@ -44,7 +44,7 @@ public interface ServerServiceMappingRepository {
     })
     ServerServiceMapping getById(Integer id);
 
-    @Select("select * from server_service_mapping where server_id=#{#serverId}")
+    @Select("select * from server_service_mapping where server_id=#{serverId}")
     @Results({
             @Result(column = "server_id", property = "serverId"),
             @Result(column = "service_id", property = "serviceId"),
@@ -58,7 +58,7 @@ public interface ServerServiceMappingRepository {
     })
     List<ServerServiceMapping> getByServerId(Integer serverId);
 
-    @Select("select * from server_service_mapping where service_id=#{#serviceId}")
+    @Select("select * from server_service_mapping where service_id=#{serviceId}")
     @Results({
             @Result(column = "server_id", property = "serverId"),
             @Result(column = "service_id", property = "serviceId"),
@@ -87,7 +87,8 @@ public interface ServerServiceMappingRepository {
     @Delete("DELETE FROM server_service_mapping WHERE id =#{id}")
     int delete(Integer id);
 
-    @Select("select * from server_service_mapping where service_id=#{serviceId} and server_id=#{serverId}")
+
+    @Select("select * from server_service_mapping where server_id=#{serverId} and  service_id=#{serviceId}")
     @Results({
             @Result(column = "server_id", property = "serverId"),
             @Result(column = "service_id", property = "serviceId"),

@@ -11,4 +11,10 @@ spring:
     password:
 
 
-service-keeper:
+logging:
+  level:
+    org:
+      nocoder:
+        servicekeeper:
+          infrastructure:
+            repository: debug

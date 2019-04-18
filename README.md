@@ -1,6 +1,6 @@
 # Service Keeper(TBD)
 
-> Service Kepper is an operation and maintenance system that supports the automatic deployment of docker containers. 
+> Service Keeper is an operation and maintenance system that supports the automatic deployment of docker containers. 
 > It can help developers quickly release the system, save the time of switching between multiple remote connection terminals,
 > and make your operation and maintenance work easier and more convenient.
 

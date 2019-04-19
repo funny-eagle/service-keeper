@@ -13,9 +13,6 @@
     <!-- Custom styles for this template -->
     <link th:href="@{/vendor/theme.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
-    <script th:src="@{/vendor/jquery-3.3.1.min.js}"></script>
-    <script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
-    <script th:src="@{/vendor/serialize_object.js}"></script>
 </head>
 
 <body>
@@ -28,7 +25,7 @@
     <div class="row">
         <div class="col-md-12">
             <a class="btn btn-sm btn-primary" id="btn-create-service" href="service/detail">
-                <span class="glyphicon glyphicon-plus"></span>  Create Service
+                <span class="glyphicon glyphicon-plus"></span> Create Service
             </a>
         </div>
     </div>
@@ -51,63 +48,9 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        $("#sk-nav li").removeClass("active");
-        $("#service-li").addClass("active");
-        getServiceList();
-    });
-
-    function getServiceList(){
-        $("#server-tbody").html("loading...");
-        $.ajax({
-            type: "get",
-            url: "service/list",
-            dataType: "json",
-            success: function (res) {
-                $("#server-tbody").html("");
-                for (var i = 0; i < res.data.length; i++) {
-                    $("#server-tbody").append(
-                        "<tr>" +
-                        "<td width='10px;'>" + (i + 1) + "</td>" +
-                        "<td><a href='/service/detail/"+res.data[i].id+"'>" + res.data[i].name + "<a/> </td>" +
-                        "<td>" + res.data[i].port + "</td>" +
-                        "<td>" + res.data[i].dockerImageName + ":" + res.data[i].dockerImageTag + "</td>" +
-                        "<td>"+ res.data[i].dockerContainerName +"</td>"+
-                        "<td><a href='/service/detail/" +res.data[i].id + "'>Edit Service</a></td>" +
-                        "</tr>" + ""
-                    );
-                }
-            }
-        });
-    }
-
-
-    $("#btn-save").click(function(){
-        $("#btn-save").attr("disabled","disabled");
-        $.ajax({
-            type: "post",
-            url: "service",
-            data: $("#service-form").serialize_object(),
-            success: function (res) {
-                $("#btn-save").removeAttr("disabled");
-                $("input").val("");
-                $("#serviceModal").modal("hide");
-                getServiceList();
-            }
-        });
-    });
-
-    function deploy(id){
-        $.ajax({
-            type: "get",
-            url: "/service/deploy/"+id,
-            success: function (res) {
-                console.log("deploy method called.");
-                location.reload();
-            }
-        });
-    }
-</script>
+<script th:src="@{/vendor/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/serialize_object.js}"></script>
+<script th:src="@{/service.js}"></script>
 </body>
 </html>

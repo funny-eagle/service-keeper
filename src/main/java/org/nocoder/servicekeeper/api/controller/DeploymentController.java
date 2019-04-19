@@ -1,6 +1,7 @@
 package org.nocoder.servicekeeper.api.controller;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.time.DateUtils;
 import org.nocoder.servicekeeper.application.dto.ServerDto;
 import org.nocoder.servicekeeper.application.dto.ServerServiceMappingDto;
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
@@ -9,6 +10,7 @@ import org.nocoder.servicekeeper.application.service.ServerService;
 import org.nocoder.servicekeeper.application.service.ServiceService;
 import org.nocoder.servicekeeper.common.BaseResponse;
 import org.nocoder.servicekeeper.common.Enumeration.ServiceStatus;
+import org.nocoder.servicekeeper.common.util.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,12 +77,6 @@ public class DeploymentController {
         Validate.notEmpty(dtos, "deployment plan can not be none");
         dtos.forEach(dto -> {
             if(CollectionUtils.isEmpty(deploymentService.selectByServerIdAndServiceId(dto.getServerId(), dto.getServiceId()))){
-                dto.setServiceStatus(ServiceStatus.STOP.status());
-                ServiceDto serviceDto = serviceService.getById(dto.getServiceId());
-                dto.setServiceAlias(serviceDto.getName());
-                ServerDto serverDto = serverService.getById(dto.getServerId());
-                dto.setServerIp(serverDto.getIp());
-                dto.setServerName(serverDto.getName());
                 deploymentService.insert(dto);
             }else{
                 logger.info("the mapping {}, {} is existed",dto.getServerId(), dto.getServiceId());
@@ -86,4 +84,5 @@ public class DeploymentController {
         });
         return new BaseResponse("save deployment plan successful");
     }
+
 }

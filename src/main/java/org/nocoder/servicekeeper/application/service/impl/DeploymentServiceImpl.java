@@ -3,8 +3,10 @@ package org.nocoder.servicekeeper.application.service.impl;
 import org.nocoder.servicekeeper.application.assembler.ServerServiceMappingAssembler;
 import org.nocoder.servicekeeper.application.dto.ServerServiceMappingDto;
 import org.nocoder.servicekeeper.application.service.DeploymentService;
+import org.nocoder.servicekeeper.common.Enumeration.ServiceStatus;
 import org.nocoder.servicekeeper.common.ssh.Certification;
 import org.nocoder.servicekeeper.common.ssh.SshClient;
+import org.nocoder.servicekeeper.common.util.DateTimeUtils;
 import org.nocoder.servicekeeper.domain.modal.Server;
 import org.nocoder.servicekeeper.domain.modal.ServerServiceMapping;
 import org.nocoder.servicekeeper.infrastructure.repository.ServerRepository;
@@ -51,12 +53,15 @@ public class DeploymentServiceImpl implements DeploymentService {
 
     @Override
     public int insert(ServerServiceMappingDto dto) {
+        dto.setServiceStatus(ServiceStatus.STOP.status());
+        dto.setCreateTime(DateTimeUtils.getCurrentDateTime());
         ServerServiceMapping mapping = assembler.convertToMapping(dto);
         return serverServiceMappingRepository.insert(mapping);
     }
 
     @Override
     public int update(ServerServiceMappingDto dto) {
+        dto.setUpdateTime(DateTimeUtils.getCurrentDateTime());
         ServerServiceMapping mapping = assembler.convertToMapping(dto);
         return serverServiceMappingRepository.update(mapping);
     }

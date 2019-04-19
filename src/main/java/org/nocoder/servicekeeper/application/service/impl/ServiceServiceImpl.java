@@ -3,6 +3,7 @@ package org.nocoder.servicekeeper.application.service.impl;
 import org.nocoder.servicekeeper.application.assembler.ServiceAssembler;
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
 import org.nocoder.servicekeeper.application.service.ServiceService;
+import org.nocoder.servicekeeper.common.util.DateTimeUtils;
 import org.nocoder.servicekeeper.domain.modal.Service;
 import org.nocoder.servicekeeper.infrastructure.repository.ServiceRepository;
 import org.slf4j.Logger;
@@ -43,6 +44,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int insert(ServiceDto dto) {
+        dto.setCreateTime(DateTimeUtils.getCurrentDateTime());
         Service service = assembler.convertToService(dto);
         return serviceRepository.insert(service);
     }
@@ -50,6 +52,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int update(ServiceDto dto) {
+        dto.setUpdateTime(DateTimeUtils.getCurrentDateTime());
         Service service = assembler.convertToService(dto);
         return serviceRepository.update(service);
     }

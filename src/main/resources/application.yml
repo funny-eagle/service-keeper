@@ -1,20 +1,4 @@
-server:
-  port: 9999
-
 spring:
-  thymeleaf:
-    cache: false
-  datasource:
-    driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:/Users/jason/local/github/service-keeper.db
-    username:
-    password:
+  profiles:
+    active: dev
 
-
-logging:
-  level:
-    org:
-      nocoder:
-        servicekeeper:
-          infrastructure:
-            repository: debug

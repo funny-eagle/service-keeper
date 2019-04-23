@@ -1,4 +1,4 @@
-package org.nocoder.servicekeeper.common.Enumeration;
+package org.nocoder.servicekeeper.common.enumeration;
 
 /**
  * @author jason

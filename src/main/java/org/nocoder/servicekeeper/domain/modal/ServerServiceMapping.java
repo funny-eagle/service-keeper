@@ -8,10 +8,7 @@ public class ServerServiceMapping {
     private Integer id;
     private Integer serverId;
     private Integer serviceId;
-    private String serviceAlias;
     private String serviceStatus;
-    private String serverName;
-    private String serverIp;
     private String createTime;
     private String updateTime;
     private String operator;
@@ -40,13 +37,6 @@ public class ServerServiceMapping {
         this.serviceId = serviceId;
     }
 
-    public String getServiceAlias() {
-        return serviceAlias;
-    }
-
-    public void setServiceAlias(String serviceAlias) {
-        this.serviceAlias = serviceAlias;
-    }
 
     public String getServiceStatus() {
         return serviceStatus;
@@ -54,22 +44,6 @@ public class ServerServiceMapping {
 
     public void setServiceStatus(String serviceStatus) {
         this.serviceStatus = serviceStatus;
-    }
-
-    public String getServerName() {
-        return serverName;
-    }
-
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
-    }
-
-    public String getServerIp() {
-        return serverIp;
-    }
-
-    public void setServerIp(String serverIp) {
-        this.serverIp = serverIp;
     }
 
     public String getCreateTime() {

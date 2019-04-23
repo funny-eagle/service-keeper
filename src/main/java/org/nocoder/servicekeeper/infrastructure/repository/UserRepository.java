@@ -18,10 +18,10 @@ public interface UserRepository {
     User getById(Integer id);
 
     @Insert("INSERT INTO user(name,ip,port,user,password) VALUES(#{name}, #{ip}, #{port}), #{user}, #{password}")
-    void insert(User User);
+    void insert(User user);
 
     @Update("UPDATE user SET name=#{name}, ip=#{ip}, port=#{port}, user=#{user}, password=#{password} WHERE id =#{id}")
-    void update(User User);
+    void update(User user);
 
     @Delete("DELETE FROM User WHERE id =#{id}")
     void delete(Integer id);

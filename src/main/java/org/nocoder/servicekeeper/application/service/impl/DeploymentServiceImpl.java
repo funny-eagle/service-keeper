@@ -1,9 +1,11 @@
 package org.nocoder.servicekeeper.application.service.impl;
 
+import org.nocoder.servicekeeper.application.assembler.DeploymentPlanAssembler;
 import org.nocoder.servicekeeper.application.assembler.ServerServiceMappingAssembler;
+import org.nocoder.servicekeeper.application.dto.DeploymentPlanDto;
 import org.nocoder.servicekeeper.application.dto.ServerServiceMappingDto;
 import org.nocoder.servicekeeper.application.service.DeploymentService;
-import org.nocoder.servicekeeper.common.Enumeration.ServiceStatus;
+import org.nocoder.servicekeeper.common.enumeration.ServiceStatus;
 import org.nocoder.servicekeeper.common.ssh.Certification;
 import org.nocoder.servicekeeper.common.ssh.SshClient;
 import org.nocoder.servicekeeper.common.util.DateTimeUtils;
@@ -35,6 +37,9 @@ public class DeploymentServiceImpl implements DeploymentService {
     @Resource
     private ServerServiceMappingAssembler assembler;
 
+    @Resource
+    private DeploymentPlanAssembler deploymentPlanAssembler;
+
     @Override
     public void executeCommand(Integer serverId, List<String> commandList) {
         threadPoolExecutor.execute(() -> {
@@ -52,7 +57,7 @@ public class DeploymentServiceImpl implements DeploymentService {
 
 
     @Override
-    public int insert(ServerServiceMappingDto dto) {
+    public int add(ServerServiceMappingDto dto) {
         dto.setServiceStatus(ServiceStatus.STOP.status());
         dto.setCreateTime(DateTimeUtils.getCurrentDateTime());
         ServerServiceMapping mapping = assembler.convertToMapping(dto);
@@ -72,28 +77,33 @@ public class DeploymentServiceImpl implements DeploymentService {
     }
 
     @Override
-    public List<ServerServiceMappingDto> selectAll() {
+    public List<ServerServiceMappingDto> getAll() {
         List<ServerServiceMapping> mappings =  serverServiceMappingRepository.getAll();
         return assembler.convertToDtoList(mappings);
     }
 
     @Override
-    public ServerServiceMappingDto selectById(Integer id) {
+    public ServerServiceMappingDto getById(Integer id) {
         return assembler.convertToDto(serverServiceMappingRepository.getById(id));
     }
 
     @Override
-    public List<ServerServiceMappingDto> selectByServiceId(Integer serviceId) {
+    public List<ServerServiceMappingDto> getByServiceId(Integer serviceId) {
         return assembler.convertToDtoList(serverServiceMappingRepository.getByServiceId(serviceId));
     }
 
     @Override
-    public List<ServerServiceMappingDto> selectByServerId(Integer serverId) {
+    public List<ServerServiceMappingDto> getByServerId(Integer serverId) {
         return assembler.convertToDtoList(serverServiceMappingRepository.getByServerId(serverId));
     }
 
     @Override
-    public List<ServerServiceMappingDto> selectByServerIdAndServiceId(Integer serverId, Integer serviceId) {
+    public List<ServerServiceMappingDto> getByServerIdAndServiceId(Integer serverId, Integer serviceId) {
         return assembler.convertToDtoList(serverServiceMappingRepository.getByServerIdAndServiceId(serverId, serviceId));
+    }
+
+    @Override
+    public List<DeploymentPlanDto> getDeploymentPlans(){
+        return deploymentPlanAssembler.convertToDtoList(serverServiceMappingRepository.getDeploymentPlans());
     }
 }

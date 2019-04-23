@@ -1,5 +1,6 @@
 package org.nocoder.servicekeeper.application.service;
 
+import org.nocoder.servicekeeper.application.dto.DeploymentPlanDto;
 import org.nocoder.servicekeeper.application.dto.ServerServiceMappingDto;
 
 import java.util.List;
@@ -11,19 +12,21 @@ import java.util.List;
 public interface DeploymentService {
     void executeCommand(Integer serverId, List<String> commandList);
 
-    int insert(ServerServiceMappingDto dto);
+    int add(ServerServiceMappingDto dto);
 
     int update(ServerServiceMappingDto dto);
 
     int delete(Integer id);
 
-    List<ServerServiceMappingDto> selectAll();
+    List<ServerServiceMappingDto> getAll();
 
-    ServerServiceMappingDto selectById(Integer id);
+    ServerServiceMappingDto getById(Integer id);
 
-    List<ServerServiceMappingDto> selectByServiceId(Integer serviceId);
+    List<ServerServiceMappingDto> getByServiceId(Integer serviceId);
 
-    List<ServerServiceMappingDto> selectByServerId(Integer serverId);
+    List<ServerServiceMappingDto> getByServerId(Integer serverId);
 
-    List<ServerServiceMappingDto> selectByServerIdAndServiceId(Integer serverId, Integer serviceId);
+    List<ServerServiceMappingDto> getByServerIdAndServiceId(Integer serverId, Integer serviceId);
+
+    List<DeploymentPlanDto> getDeploymentPlans();
 }

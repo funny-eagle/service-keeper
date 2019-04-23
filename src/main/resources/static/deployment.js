@@ -3,6 +3,7 @@ $(document).ready(function () {
     $("#deployment-li").addClass("active");
     getServiceList();
     getServerList();
+    getDeploymentPlans();
 });
 
 $("#deploy-by-service-li").click(function () {
@@ -109,4 +110,103 @@ function assembleMappingData() {
     });
     console.log("data.length: " + data.length);
     return data;
+}
+
+function getDeploymentPlans() {
+    $("#service-panels").html("loading...");
+    // ajax get request to load data
+    $.ajax({
+        type: "get",
+        url: "deployment/list",
+        dataType: "json",
+        success: function (res) {
+            $("#service-panels").html("");
+            if (res.data.length > 0) {
+                for (var i = 0; i < res.data.length; i++) {
+                    console.log("deployment-plan:" + res.data[i].serviceName + ", " + res.data[i].serverName);
+                    $("#service-panels").append(loadServicePanels(res.data[i]));
+                }
+            }
+
+        }
+    });
+}
+
+function loadServicePanels(deploymentPlan) {
+    var servicePanelContent =
+        "<div class=\"col-lg-6\">\n" +
+        "    <div class=\"panel panel-default\">\n" +
+        "        <div class=\"panel-heading\">\n" +
+        "            <h3 class=\"panel-title\">" + deploymentPlan.serviceName + "</h3>\n" +
+        "        </div>\n" +
+        "        <div class=\"panel-body\">\n" +
+        "            <p>\n" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-primary\">Deploy</button>\n" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-success\">Start</button>\n" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-warning\">Restart</button>\n" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-danger\">Stop</button>\n" +
+        "            </p>\n" +
+        "            <table class=\"table\">\n" +
+        "                <thead>\n" +
+        "                <tr>\n" +
+        "                    <th>#</th>\n" +
+        "                    <th>Server</th>\n" +
+        "                    <th>Docker Image</th>\n" +
+        "                    <th>Status</th>\n" +
+        "                    <th>Operation</th>\n" +
+        "                </tr>\n" +
+        "                </thead>\n" +
+        "                <tbody>\n" +
+        "                <tr>\n" +
+        "                    <td>1</td>\n" +
+        "                    <td>192.168.1.1</td>\n" +
+        "                    <td>book-service:1.0</td>\n" +
+        "                    <td><span class=\"label label-danger\">Stop</span></td>\n" +
+        "                    <td><!-- Split button -->\n" +
+        "                        <div class=\"btn-group\">\n" +
+        "                            <button type=\"button\" class=\"btn btn-default btn-xs\">Deploy</button>\n" +
+        "                            <button type=\"button\" class=\"btn btn-default btn-xs dropdown-toggle\"\n" +
+        "                                    data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+        "                                <span class=\"caret\"></span>\n" +
+        "                                <span class=\"sr-only\">Toggle Dropdown</span>\n" +
+        "                            </button>\n" +
+        "                            <ul class=\"dropdown-menu\">\n" +
+        "                                <li><a href=\"#\">Action</a></li>\n" +
+        "                                <li><a href=\"#\">Another action</a></li>\n" +
+        "                                <li><a href=\"#\">Something else here</a></li>\n" +
+        "                                <li role=\"separator\" class=\"divider\"></li>\n" +
+        "                                <li><a href=\"#\">Separated link</a></li>\n" +
+        "                            </ul>\n" +
+        "                        </div>\n" +
+        "                    </td>\n" +
+        "                </tr>\n" +
+        "                <tr>\n" +
+        "                    <td>1</td>\n" +
+        "                    <td>192.168.1.3</td>\n" +
+        "                    <td>book-service:1.0</td>\n" +
+        "                    <td><span class=\"label label-danger\">Stop</span></td>\n" +
+        "                    <td><!-- Split button -->\n" +
+        "                        <div class=\"btn-group\">\n" +
+        "                            <button type=\"button\" class=\"btn btn-default btn-xs\">Deploy</button>\n" +
+        "                            <button type=\"button\" class=\"btn btn-default btn-xs dropdown-toggle\"\n" +
+        "                                    data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+        "                                <span class=\"caret\"></span>\n" +
+        "                                <span class=\"sr-only\">Toggle Dropdown</span>\n" +
+        "                            </button>\n" +
+        "                            <ul class=\"dropdown-menu\">\n" +
+        "                                <li><a href=\"#\">Action</a></li>\n" +
+        "                                <li><a href=\"#\">Another action</a></li>\n" +
+        "                                <li><a href=\"#\">Something else here</a></li>\n" +
+        "                                <li role=\"separator\" class=\"divider\"></li>\n" +
+        "                                <li><a href=\"#\">Separated link</a></li>\n" +
+        "                            </ul>\n" +
+        "                        </div>\n" +
+        "                    </td>\n" +
+        "                </tr>\n" +
+        "                </tbody>\n" +
+        "            </table>\n" +
+        "        </div>\n" +
+        "    </div>\n" +
+        "</div>";
+    return servicePanelContent;
 }

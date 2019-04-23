@@ -1,16 +1,14 @@
 package org.nocoder.servicekeeper.api.controller;
 
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.time.DateUtils;
-import org.nocoder.servicekeeper.application.dto.ServerDto;
+import org.nocoder.servicekeeper.application.dto.DeploymentPlanDto;
 import org.nocoder.servicekeeper.application.dto.ServerServiceMappingDto;
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
 import org.nocoder.servicekeeper.application.service.DeploymentService;
 import org.nocoder.servicekeeper.application.service.ServerService;
 import org.nocoder.servicekeeper.application.service.ServiceService;
 import org.nocoder.servicekeeper.common.BaseResponse;
-import org.nocoder.servicekeeper.common.Enumeration.ServiceStatus;
-import org.nocoder.servicekeeper.common.util.DateTimeUtils;
+import org.nocoder.servicekeeper.common.enumeration.ServiceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,10 +16,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author jason
@@ -76,13 +71,45 @@ public class DeploymentController {
     public BaseResponse saveServerServiceMapping(@RequestBody List<ServerServiceMappingDto> dtos){
         Validate.notEmpty(dtos, "deployment plan can not be none");
         dtos.forEach(dto -> {
-            if(CollectionUtils.isEmpty(deploymentService.selectByServerIdAndServiceId(dto.getServerId(), dto.getServiceId()))){
-                deploymentService.insert(dto);
+            if(CollectionUtils.isEmpty(deploymentService.getByServerIdAndServiceId(dto.getServerId(), dto.getServiceId()))){
+                deploymentService.add(dto);
             }else{
                 logger.info("the mapping {}, {} is existed",dto.getServerId(), dto.getServiceId());
             }
         });
         return new BaseResponse("save deployment plan successful");
+    }
+
+    @GetMapping(value = "/list")
+    @ResponseBody
+    public BaseResponse<List<DeploymentPlanDto>> getDeploymentPlans(){
+        return new BaseResponse<>(deploymentService.getDeploymentPlans());
+    }
+
+    @GetMapping(value = "/service-list")
+    @ResponseBody
+    public BaseResponse<List<Map<String, Object>>> getServiceDeploymentPlans(){
+        List<DeploymentPlanDto> dtos = deploymentService.getDeploymentPlans();
+
+        List<Map<String, Object>> list = new ArrayList<>();
+        Set<Integer> serviceIdSet = new HashSet<>();
+        serviceIdSet.forEach(serviceId ->{
+            Map<String, Object> resultMap = new HashMap();
+            List<Map<String, Object>> resultList = new ArrayList<>();
+            dtos.forEach(dto ->{
+                if(dto.getServiceId().equals(serviceId)){
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("serverId", dto.getServerId());
+                    map.put("serverIp", dto.getServerIp());
+                    map.put("serverName", dto.getServerName());
+                    resultList.add(map);
+                }
+            });
+            resultMap.put("serviceId", serviceId);
+            resultMap.put("servers", resultList);
+            resultList.add(resultMap);
+        });
+        return new BaseResponse<>(list);
     }
 
 }

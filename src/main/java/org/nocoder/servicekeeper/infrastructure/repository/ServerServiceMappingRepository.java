@@ -3,6 +3,7 @@ package org.nocoder.servicekeeper.infrastructure.repository;
 import org.apache.ibatis.annotations.*;
 import org.nocoder.servicekeeper.domain.modal.Server;
 import org.nocoder.servicekeeper.domain.modal.ServerServiceMapping;
+import org.nocoder.servicekeeper.infrastructure.result.DeploymentPlanResult;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -81,7 +82,18 @@ public interface ServerServiceMappingRepository {
             @Result(column = "service_status", property = "serviceStatus"),
             @Result(column = "create_time", property = "createTime"),
             @Result(column = "update_time", property = "updateTime"),
-
     })
     List<ServerServiceMapping> getByServerIdAndServiceId(@Param("serverId") Integer serverId, @Param("serviceId") Integer serviceId);
+
+    @Select("select a.name as serviceName, a.port as servicePort, b.name as serverName, b.ip as serverIp, c.* " +
+            "from service a, server b, server_service_mapping c " +
+            "where a.id = c.service_id and b.id=c.server_id;")
+    @Results({
+            @Result(column = "server_id", property = "serverId"),
+            @Result(column = "service_id", property = "serviceId"),
+            @Result(column = "service_status", property = "serviceStatus"),
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "update_time", property = "updateTime"),
+    })
+    List<DeploymentPlanResult> getDeploymentPlans();
 }

@@ -29,7 +29,7 @@ public class ServerController {
     }
 
     /**
-     * insert or update server
+     * add or update server
      *
      * @return
      */

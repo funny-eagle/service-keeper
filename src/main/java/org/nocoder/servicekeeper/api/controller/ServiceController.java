@@ -7,7 +7,6 @@ import org.nocoder.servicekeeper.application.service.DeploymentService;
 import org.nocoder.servicekeeper.application.service.ServerService;
 import org.nocoder.servicekeeper.application.service.ServiceService;
 import org.nocoder.servicekeeper.common.BaseResponse;
-import org.nocoder.servicekeeper.common.Enumeration.ServiceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,7 +67,7 @@ public class ServiceController {
     }
 
     /**
-     * insert server
+     * add server
      *
      * @return
      */

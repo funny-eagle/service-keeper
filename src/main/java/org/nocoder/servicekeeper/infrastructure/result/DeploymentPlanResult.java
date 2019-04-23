@@ -1,14 +1,18 @@
-package org.nocoder.servicekeeper.application.dto;
+package org.nocoder.servicekeeper.infrastructure.result;
 
 /**
  * @author jason
- * @date 2019/4/17.
+ * @date 2019/4/19.
  */
-public class ServerServiceMappingDto {
+public class DeploymentPlanResult {
     private Integer id;
     private Integer serverId;
     private Integer serviceId;
+    private String serviceName;
     private String serviceStatus;
+    private String serverName;
+    private String serverIp;
+    private String servicePort;
     private String createTime;
     private String updateTime;
     private String operator;
@@ -37,6 +41,13 @@ public class ServerServiceMappingDto {
         this.serviceId = serviceId;
     }
 
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
 
     public String getServiceStatus() {
         return serviceStatus;
@@ -44,6 +55,30 @@ public class ServerServiceMappingDto {
 
     public void setServiceStatus(String serviceStatus) {
         this.serviceStatus = serviceStatus;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    public String getServerIp() {
+        return serverIp;
+    }
+
+    public void setServerIp(String serverIp) {
+        this.serverIp = serverIp;
+    }
+
+    public String getServicePort() {
+        return servicePort;
+    }
+
+    public void setServicePort(String servicePort) {
+        this.servicePort = servicePort;
     }
 
     public String getCreateTime() {

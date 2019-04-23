@@ -91,25 +91,37 @@ public class DeploymentController {
     public BaseResponse<List<Map<String, Object>>> getServiceDeploymentPlans(){
         List<DeploymentPlanDto> dtos = deploymentService.getDeploymentPlans();
 
-        List<Map<String, Object>> list = new ArrayList<>();
         Set<Integer> serviceIdSet = new HashSet<>();
+        dtos.forEach(plan -> serviceIdSet.add(plan.getServiceId()));
+
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
         serviceIdSet.forEach(serviceId ->{
-            Map<String, Object> resultMap = new HashMap();
-            List<Map<String, Object>> resultList = new ArrayList<>();
+            List<Map<String, Object>> serverList = new ArrayList<>();
+            Map<String, Object> serviceMap = new HashMap(16);
+
             dtos.forEach(dto ->{
                 if(dto.getServiceId().equals(serviceId)){
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("serverId", dto.getServerId());
-                    map.put("serverIp", dto.getServerIp());
-                    map.put("serverName", dto.getServerName());
-                    resultList.add(map);
+                    serviceMap.computeIfAbsent(SERVICE_ID, k -> dto.getServiceId());
+                    serviceMap.computeIfAbsent(SERVICE_NAME, k -> dto.getServiceName());
+                    Map<String, Object> serverMap = new HashMap<>();
+                    serverMap.put(SERVER_ID, dto.getServerId());
+                    serverMap.put(SERVER_IP, dto.getServerIp());
+                    serverMap.put(SERVER_NAME, dto.getServerName());
+                    serverList.add(serverMap);
                 }
             });
-            resultMap.put("serviceId", serviceId);
-            resultMap.put("servers", resultList);
-            resultList.add(resultMap);
+            serviceMap.put(SERVERS, serverList);
+            resultList.add(serviceMap);
         });
-        return new BaseResponse<>(list);
+        return new BaseResponse<>(resultList);
     }
+
+    private static final String SERVICE_ID = "serviceId";
+    private static final String SERVICE_NAME = "serviceName";
+    private static final String SERVER_ID = "serverId";
+    private static final String SERVER_IP = "serverIp";
+    private static final String SERVER_NAME = "serverName";
+    private static final String SERVERS = "servers";
 
 }

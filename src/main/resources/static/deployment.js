@@ -78,6 +78,7 @@ function saveDeploymentPlan() {
         success: function (res) {
             console.log(res.data);
             $("#deploymentPlanModal").modal("hide");
+            window.location.reload();
         }
     });
 }
@@ -112,19 +113,21 @@ function assembleMappingData() {
     return data;
 }
 
+
 function getDeploymentPlans() {
     $("#service-panels").html("loading...");
     // ajax get request to load data
     $.ajax({
         type: "get",
-        url: "deployment/list",
+        url: "deployment/service-list",
         dataType: "json",
         success: function (res) {
             $("#service-panels").html("");
             if (res.data.length > 0) {
                 for (var i = 0; i < res.data.length; i++) {
-                    console.log("deployment-plan:" + res.data[i].serviceName + ", " + res.data[i].serverName);
+                    console.log("deployment-plan:" + res.data[i].serviceId + ", " + res.data[i].serviceName);
                     $("#service-panels").append(loadServicePanels(res.data[i]));
+                    $("#servers-for-service" + res.data[i].serviceId).append(loadServersForservice(res.data[i].servers));
                 }
             }
 
@@ -134,79 +137,66 @@ function getDeploymentPlans() {
 
 function loadServicePanels(deploymentPlan) {
     var servicePanelContent =
-        "<div class=\"col-lg-6\">\n" +
+        "<div class=\"col-lg-12\">\n" +
         "    <div class=\"panel panel-default\">\n" +
         "        <div class=\"panel-heading\">\n" +
         "            <h3 class=\"panel-title\">" + deploymentPlan.serviceName + "</h3>\n" +
         "        </div>\n" +
         "        <div class=\"panel-body\">\n" +
-        "            <p>\n" +
-        "                <button type=\"button\" class=\"btn btn-xs btn-primary\">Deploy</button>\n" +
+        "            <div style='float: right'>\n" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-primary\">Deploy Latest Image</button>\n" +
         "                <button type=\"button\" class=\"btn btn-xs btn-success\">Start</button>\n" +
         "                <button type=\"button\" class=\"btn btn-xs btn-warning\">Restart</button>\n" +
         "                <button type=\"button\" class=\"btn btn-xs btn-danger\">Stop</button>\n" +
-        "            </p>\n" +
+        "            </div>\n" +
         "            <table class=\"table\">\n" +
         "                <thead>\n" +
         "                <tr>\n" +
-        "                    <th>#</th>\n" +
-        "                    <th>Server</th>\n" +
+        "                    <th>Server Name</th>\n" +
+        "                    <th>Server IP</th>\n" +
         "                    <th>Docker Image</th>\n" +
-        "                    <th>Status</th>\n" +
+        "                    <th>Docker Container</th>\n" +
+        "                    <th>Service Status</th>\n" +
         "                    <th>Operation</th>\n" +
         "                </tr>\n" +
         "                </thead>\n" +
-        "                <tbody>\n" +
-        "                <tr>\n" +
-        "                    <td>1</td>\n" +
-        "                    <td>192.168.1.1</td>\n" +
-        "                    <td>book-service:1.0</td>\n" +
-        "                    <td><span class=\"label label-danger\">Stop</span></td>\n" +
-        "                    <td><!-- Split button -->\n" +
-        "                        <div class=\"btn-group\">\n" +
-        "                            <button type=\"button\" class=\"btn btn-default btn-xs\">Deploy</button>\n" +
-        "                            <button type=\"button\" class=\"btn btn-default btn-xs dropdown-toggle\"\n" +
-        "                                    data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
-        "                                <span class=\"caret\"></span>\n" +
-        "                                <span class=\"sr-only\">Toggle Dropdown</span>\n" +
-        "                            </button>\n" +
-        "                            <ul class=\"dropdown-menu\">\n" +
-        "                                <li><a href=\"#\">Action</a></li>\n" +
-        "                                <li><a href=\"#\">Another action</a></li>\n" +
-        "                                <li><a href=\"#\">Something else here</a></li>\n" +
-        "                                <li role=\"separator\" class=\"divider\"></li>\n" +
-        "                                <li><a href=\"#\">Separated link</a></li>\n" +
-        "                            </ul>\n" +
-        "                        </div>\n" +
-        "                    </td>\n" +
-        "                </tr>\n" +
-        "                <tr>\n" +
-        "                    <td>1</td>\n" +
-        "                    <td>192.168.1.3</td>\n" +
-        "                    <td>book-service:1.0</td>\n" +
-        "                    <td><span class=\"label label-danger\">Stop</span></td>\n" +
-        "                    <td><!-- Split button -->\n" +
-        "                        <div class=\"btn-group\">\n" +
-        "                            <button type=\"button\" class=\"btn btn-default btn-xs\">Deploy</button>\n" +
-        "                            <button type=\"button\" class=\"btn btn-default btn-xs dropdown-toggle\"\n" +
-        "                                    data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
-        "                                <span class=\"caret\"></span>\n" +
-        "                                <span class=\"sr-only\">Toggle Dropdown</span>\n" +
-        "                            </button>\n" +
-        "                            <ul class=\"dropdown-menu\">\n" +
-        "                                <li><a href=\"#\">Action</a></li>\n" +
-        "                                <li><a href=\"#\">Another action</a></li>\n" +
-        "                                <li><a href=\"#\">Something else here</a></li>\n" +
-        "                                <li role=\"separator\" class=\"divider\"></li>\n" +
-        "                                <li><a href=\"#\">Separated link</a></li>\n" +
-        "                            </ul>\n" +
-        "                        </div>\n" +
-        "                    </td>\n" +
-        "                </tr>\n" +
+        "                <tbody id='servers-for-service" + deploymentPlan.serviceId + "'>\n" +
         "                </tbody>\n" +
         "            </table>\n" +
         "        </div>\n" +
         "    </div>\n" +
         "</div>";
     return servicePanelContent;
+}
+
+function loadServersForservice(serverList) {
+    var server_tr_list = "";
+    for (var i = 0; i < serverList.length; i++) {
+        console.log(serverList[i].serverName);
+        server_tr_list += "<tr>\n" +
+            "<td class='hidden'>" + serverList[i].serverId + "</td>\n" +
+            "<td>" + serverList[i].serverName + "</td>\n" +
+            "<td>" + serverList[i].serverIp + "</td>\n" +
+            "<td></td>\n" +
+            "<td></td>\n" +
+            "<td><span class=\"label label-danger\">Stop</span></td>\n" +
+            "<td><!-- Split button -->\n" +
+            "    <div class=\"btn-group\">\n" +
+            "        <button type=\"button\" class=\"btn btn-default btn-xs\"><span class='glyphicon glyphicon-play'></span> Deploy Latest Image</button>\n" +
+            "        <button type=\"button\" class=\"btn btn-default btn-xs dropdown-toggle\"\n" +
+            "                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+            "            <span class=\"caret\"></span>\n" +
+            "            <span class=\"sr-only\">Toggle Dropdown</span>\n" +
+            "        </button>\n" +
+            "        <ul class=\"dropdown-menu\">\n" +
+            "            <li><a href=\"#\">Start</a></li>\n" +
+            "            <li><a href=\"#\">Restart</a></li>\n" +
+            "            <li><a href=\"#\">Stop</a></li>\n" +
+            "        </ul>\n" +
+            "    </div>\n" +
+            "</td>\n" +
+            "</tr>\n";
+    }
+    return server_tr_list;
+
 }

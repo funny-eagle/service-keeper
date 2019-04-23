@@ -85,13 +85,18 @@ public interface ServerServiceMappingRepository {
     })
     List<ServerServiceMapping> getByServerIdAndServiceId(@Param("serverId") Integer serverId, @Param("serviceId") Integer serviceId);
 
-    @Select("select a.name as serviceName, a.port as servicePort, b.name as serverName, b.ip as serverIp, c.* " +
+    @Select("select a.name as serviceName, a.port as servicePort, " +
+            "a.docker_image_name, a.docker_image_tag, a.docker_container_name," +
+            "b.name as serverName, b.ip as serverIp, c.* " +
             "from service a, server b, server_service_mapping c " +
             "where a.id = c.service_id and b.id=c.server_id;")
     @Results({
             @Result(column = "server_id", property = "serverId"),
             @Result(column = "service_id", property = "serviceId"),
             @Result(column = "service_status", property = "serviceStatus"),
+            @Result(column = "docker_image_name", property = "dockerImageName"),
+            @Result(column = "docker_image_tag", property = "dockerImageTag"),
+            @Result(column = "docker_container_name", property = "dockerContainerName"),
             @Result(column = "create_time", property = "createTime"),
             @Result(column = "update_time", property = "updateTime"),
     })

@@ -9,6 +9,9 @@ public class DeploymentPlanResult {
     private Integer serverId;
     private Integer serviceId;
     private String serviceName;
+    private String dockerImageName;
+    private String dockerImageTag;
+    private String dockerContainerName;
     private String serviceStatus;
     private String serverName;
     private String serverIp;
@@ -103,5 +106,29 @@ public class DeploymentPlanResult {
 
     public void setOperator(String operator) {
         this.operator = operator;
+    }
+
+    public String getDockerImageName() {
+        return dockerImageName;
+    }
+
+    public void setDockerImageName(String dockerImageName) {
+        this.dockerImageName = dockerImageName;
+    }
+
+    public String getDockerImageTag() {
+        return dockerImageTag;
+    }
+
+    public void setDockerImageTag(String dockerImageTag) {
+        this.dockerImageTag = dockerImageTag;
+    }
+
+    public String getDockerContainerName() {
+        return dockerContainerName;
+    }
+
+    public void setDockerContainerName(String dockerContainerName) {
+        this.dockerContainerName = dockerContainerName;
     }
 }

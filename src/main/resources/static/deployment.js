@@ -177,8 +177,8 @@ function loadServersForservice(serverList) {
             "<td class='hidden'>" + serverList[i].serverId + "</td>\n" +
             "<td>" + serverList[i].serverName + "</td>\n" +
             "<td>" + serverList[i].serverIp + "</td>\n" +
-            "<td></td>\n" +
-            "<td></td>\n" +
+            "<td>" + serverList[i].dockerImageName + ":"+serverList[i].dockerImageTag+"</td>\n" +
+            "<td>" + serverList[i].dockerContainerName + "</td>\n" +
             "<td><span class=\"label label-danger\">Stop</span></td>\n" +
             "<td><!-- Split button -->\n" +
             "    <div class=\"btn-group\">\n" +

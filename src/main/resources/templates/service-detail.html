@@ -23,9 +23,6 @@
         <li><a th:href="@{/service}"><span class="glyphicon glyphicon-arrow-left"></span> Service List</a></li>
         <li class="active"> Service Detail</li>
     </ol>
-    <div class="page-header">
-        <h3>Service Detail</h3>
-    </div>
     <div class="row">
         <div class="col-md-12">
             <form id="service-form">
@@ -127,6 +124,7 @@
                 </div>
             </form>
             <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btn-delete">Delete Service</button>
                 <a id="backToService" class="btn btn-default" th:href="@{/service}">Back To List</a>
                 <button type="button" class="btn btn-primary" id="btn-save">Save</button>
             </div>

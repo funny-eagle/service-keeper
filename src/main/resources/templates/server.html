@@ -19,9 +19,6 @@
 <div th:include="fragment/navigation :: nav"></div>
 
 <div class="container theme-showcase" role="main">
-    <div class="page-header">
-        <h3>Server Connection List</h3>
-    </div>
     <div class="row">
         <div class="col-md-12">
             <button id="btn-create_connection" type="button" class="btn btn-sm btn-primary" data-toggle="modal"
@@ -70,6 +67,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="btn-delete">Delete Server</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-success" id="btn-test-connection">Test Connection
                             </button>

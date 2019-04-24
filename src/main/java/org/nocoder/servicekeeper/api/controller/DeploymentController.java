@@ -109,6 +109,7 @@ public class DeploymentController {
                     serverMap.put(SERVER_ID, dto.getServerId());
                     serverMap.put(SERVER_IP, dto.getServerIp());
                     serverMap.put(SERVER_NAME, dto.getServerName());
+                    serverMap.put(SERVICE_STATUS, dto.getServiceStatus());
                     serverMap.computeIfAbsent(DOCKER_CONTAINER_NAME, k -> dto.getDockerContainerName());
                     serverMap.computeIfAbsent(DOCKER_IMAGE_NAME, k -> dto.getDockerImageName());
                     serverMap.computeIfAbsent(DOCKER_IMAGE_TAG, k -> dto.getDockerImageTag());
@@ -123,6 +124,7 @@ public class DeploymentController {
 
     private static final String SERVICE_ID = "serviceId";
     private static final String SERVICE_NAME = "serviceName";
+    private static final String SERVICE_STATUS = "serviceStatus";
     private static final String SERVER_ID = "serverId";
     private static final String SERVER_IP = "serverIp";
     private static final String SERVER_NAME = "serverName";

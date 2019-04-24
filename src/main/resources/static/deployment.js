@@ -144,8 +144,8 @@ function loadServicePanels(deploymentPlan) {
         "        </div>\n" +
         "        <div class=\"panel-body\">\n" +
         "            <div style='float: right'>\n" +
-        "                <button type=\"button\" class=\"btn btn-xs btn-primary\">Deploy Latest Image</button>\n" +
-        "                <button type=\"button\" class=\"btn btn-xs btn-success\">Start</button>\n" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-primary\"> Deploy Latest Image</button>\n" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-success\"> Start</button>\n" +
         "                <button type=\"button\" class=\"btn btn-xs btn-warning\">Restart</button>\n" +
         "                <button type=\"button\" class=\"btn btn-xs btn-danger\">Stop</button>\n" +
         "            </div>\n" +
@@ -172,14 +172,25 @@ function loadServicePanels(deploymentPlan) {
 function loadServersForservice(serverList) {
     var server_tr_list = "";
     for (var i = 0; i < serverList.length; i++) {
-        console.log(serverList[i].serverName);
+        var service_status_span = '';
+        var serviceStatus = serverList[i].serviceStatus;
+        if("Stop" == serviceStatus){
+            service_status_span = '<span class=\"label label-danger\">' + serviceStatus + '</span>';
+        }else if("Running" == serviceStatus){
+            service_status_span = '<span class=\"label label-success\">' + serviceStatus + '</span>';
+        }else if("Pending" == serviceStatus){
+            service_status_span = '<span class=\"label label-warning\">' + serviceStatus + '</span>';
+        }else{
+            service_status_span = '<span class=\"label label-warning\">Unknown</span>';
+        }
+
         server_tr_list += "<tr>\n" +
             "<td class='hidden'>" + serverList[i].serverId + "</td>\n" +
             "<td>" + serverList[i].serverName + "</td>\n" +
             "<td>" + serverList[i].serverIp + "</td>\n" +
             "<td>" + serverList[i].dockerImageName + ":"+serverList[i].dockerImageTag+"</td>\n" +
             "<td>" + serverList[i].dockerContainerName + "</td>\n" +
-            "<td><span class=\"label label-danger\">Stop</span></td>\n" +
+            "<td>" + service_status_span + "</td>\n" +
             "<td><!-- Split button -->\n" +
             "    <div class=\"btn-group\">\n" +
             "        <button type=\"button\" class=\"btn btn-default btn-xs\"><span class='glyphicon glyphicon-play'></span> Deploy Latest Image</button>\n" +

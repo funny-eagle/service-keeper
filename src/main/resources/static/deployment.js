@@ -125,9 +125,8 @@ function getDeploymentPlans() {
             $("#service-panels").html("");
             if (res.data.length > 0) {
                 for (var i = 0; i < res.data.length; i++) {
-                    console.log("deployment-plan:" + res.data[i].serviceId + ", " + res.data[i].serviceName);
                     $("#service-panels").append(loadServicePanels(res.data[i]));
-                    $("#servers-for-service" + res.data[i].serviceId).append(loadServersForservice(res.data[i].servers));
+                    $("#servers-for-service" + res.data[i].serviceId).append(loadServersForservice(res.data[i].serviceId, res.data[i].servers));
                 }
             }
 
@@ -169,7 +168,7 @@ function loadServicePanels(deploymentPlan) {
     return servicePanelContent;
 }
 
-function loadServersForservice(serverList) {
+function loadServersForservice(serviceId, serverList) {
     var server_tr_list = "";
     for (var i = 0; i < serverList.length; i++) {
         var service_status_span = '';
@@ -193,7 +192,7 @@ function loadServersForservice(serverList) {
             "<td>" + service_status_span + "</td>\n" +
             "<td><!-- Split button -->\n" +
             "    <div class=\"btn-group\">\n" +
-            "        <button type=\"button\" class=\"btn btn-default btn-xs\"><span class='glyphicon glyphicon-play'></span> Deploy Latest Image</button>\n" +
+            "        <button type=\"button\" class=\"btn btn-default btn-xs\" onclick='deployLatesImage("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-play'></span> Deploy Latest Image</button>\n" +
             "        <button type=\"button\" class=\"btn btn-default btn-xs dropdown-toggle\"\n" +
             "                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
             "            <span class=\"caret\"></span>\n" +
@@ -209,5 +208,16 @@ function loadServersForservice(serverList) {
             "</tr>\n";
     }
     return server_tr_list;
+}
 
+function deployLatesImage(serviceId, serverId){
+    console.log("deploy service: " + serviceId);
+    $.ajax({
+        type: "get",
+        url: "deployment/deploy/"+serviceId+"?serverId="+serverId,
+        dataType: "json",
+        success: function (res) {
+            console.log(res.data);
+        }
+    });
 }

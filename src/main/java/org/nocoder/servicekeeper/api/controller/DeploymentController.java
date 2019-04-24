@@ -47,10 +47,10 @@ public class DeploymentController {
      */
     @GetMapping("/deploy/{id}")
     @ResponseBody
-    public BaseResponse deploy(@PathVariable("id") Integer serviceId) {
+    public BaseResponse deploy(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
         logger.info("controller deploy start");
         ServiceDto serviceDto = serviceService.getById(serviceId);
-        // TODO assemble command list
+
         List<String> commandList = new ArrayList<>();
         // pull the latest docker image
         commandList.add(serviceDto.getDockerPullCommand());
@@ -60,10 +60,10 @@ public class DeploymentController {
         commandList.add(serviceDto.getDockerRmCommand());
         // run the new docker container
         commandList.add(serviceDto.getDockerRunCommand());
-        deploymentService.executeCommand(serviceId, null);
-        serviceService.updateServiceStatus(serviceId, ServiceStatus.RUNNING.status());
+        deploymentService.executeCommand(serverId, commandList);
+        //serviceService.updateServiceStatus(serviceId, ServiceStatus.RUNNING.status());
         logger.info("controller deploy end");
-        return new BaseResponse();
+        return new BaseResponse("deploy complete!");
     }
 
     @PostMapping(value = "/deployment-plan")

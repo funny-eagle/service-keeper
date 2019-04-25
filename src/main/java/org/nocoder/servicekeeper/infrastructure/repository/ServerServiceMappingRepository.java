@@ -1,7 +1,6 @@
 package org.nocoder.servicekeeper.infrastructure.repository;
 
 import org.apache.ibatis.annotations.*;
-import org.nocoder.servicekeeper.domain.modal.Server;
 import org.nocoder.servicekeeper.domain.modal.ServerServiceMapping;
 import org.nocoder.servicekeeper.infrastructure.result.DeploymentPlanResult;
 import org.springframework.stereotype.Repository;

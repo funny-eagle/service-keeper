@@ -57,10 +57,4 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceRepository.update(service);
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public int updateServiceStatus(Integer id, String status) {
-        return serviceRepository.updateServiceStatus(id, status);
-    }
-
 }

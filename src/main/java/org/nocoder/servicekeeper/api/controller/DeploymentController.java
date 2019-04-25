@@ -8,7 +8,6 @@ import org.nocoder.servicekeeper.application.service.DeploymentService;
 import org.nocoder.servicekeeper.application.service.ServerService;
 import org.nocoder.servicekeeper.application.service.ServiceService;
 import org.nocoder.servicekeeper.common.BaseResponse;
-import org.nocoder.servicekeeper.common.enumeration.ServiceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -61,7 +60,7 @@ public class DeploymentController {
         // run the new docker container
         commandList.add(serviceDto.getDockerRunCommand());
         deploymentService.executeCommand(serverId, commandList);
-        //serviceService.updateServiceStatus(serviceId, ServiceStatus.RUNNING.status());
+        // TODO update deployment plan service status
         logger.info("controller deploy end");
         return new BaseResponse("deploy complete!");
     }

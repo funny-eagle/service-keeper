@@ -9,7 +9,7 @@
 
 ## Deployment
 
-![deployment](src/main/resources/images/service-keeper-deployment.1png)
+![deployment](src/main/resources/images/service-keeper-deployment.png)
 
 ### Create Deployment Plan
 

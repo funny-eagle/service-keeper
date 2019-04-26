@@ -16,7 +16,8 @@ public enum ServiceStatus {
     /**
      * pending
      */
-    PENDING("Pending");
+    PENDING("Pending"),
+    UNKNOWN("Unknown");
 
 
     ServiceStatus(String status) {

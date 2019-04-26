@@ -192,7 +192,7 @@ function loadServersForservice(serviceId, serverList) {
             "<td>" + service_status_span + "</td>\n" +
             "<td><!-- Split button -->\n" +
             "    <div class=\"btn-group\">\n" +
-            "        <button type=\"button\" class=\"btn btn-default btn-xs\" onclick='deployLatesImage("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-play'></span> Deploy Latest Image</button>\n" +
+            "        <button id='deploy-latest-image-btn' type=\"button\" class=\"btn btn-default btn-xs\" onclick='deployLatestImage("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-play'></span> Deploy Latest Image</button>\n" +
             "        <button type=\"button\" class=\"btn btn-default btn-xs dropdown-toggle\"\n" +
             "                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
             "            <span class=\"caret\"></span>\n" +
@@ -210,8 +210,8 @@ function loadServersForservice(serviceId, serverList) {
     return server_tr_list;
 }
 
-function deployLatesImage(serviceId, serverId){
-    console.log("deploy service: " + serviceId);
+function deployLatestImage(serviceId, serverId){
+    $("#deploy-latest-image-btn").attr("disabled", "disabled");
     $.ajax({
         type: "get",
         url: "deployment/deploy/"+serviceId+"?serverId="+serverId,

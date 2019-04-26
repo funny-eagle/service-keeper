@@ -10,11 +10,13 @@ import java.util.List;
  * @date 2019/4/17.
  */
 public interface DeploymentService {
-    void executeCommand(Integer serverId, List<String> commandList);
+    void executeCommand(Integer serviceId, Integer serverId, List<String> commandList) throws Exception;
 
     int add(ServerServiceMappingDto dto);
 
     int update(ServerServiceMappingDto dto);
+
+    int updateServiceStatus(Integer serverId, Integer serviceId, String serviceStatus);
 
     int delete(Integer id);
 
@@ -26,7 +28,7 @@ public interface DeploymentService {
 
     List<ServerServiceMappingDto> getByServerId(Integer serverId);
 
-    List<ServerServiceMappingDto> getByServerIdAndServiceId(Integer serverId, Integer serviceId);
+    ServerServiceMappingDto getByServerIdAndServiceId(Integer serverId, Integer serviceId);
 
     List<DeploymentPlanDto> getDeploymentPlans();
 }

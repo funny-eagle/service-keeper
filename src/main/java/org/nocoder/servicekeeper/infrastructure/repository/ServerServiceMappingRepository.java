@@ -70,6 +70,12 @@ public interface ServerServiceMappingRepository {
             " operator =#{operator} where id=#{id}")
     int update(ServerServiceMapping mapping);
 
+    @Update("update server_service_mapping set service_status =#{serviceStatus} where server_id=#{serverId} and service_id=#{serviceId}")
+    int updateServiceStatus(@Param("serverId") Integer serverId,
+                            @Param("serviceId") Integer serviceId,
+                            @Param("serviceStatus") String serviceStatus);
+
+
     @Delete("DELETE FROM server_service_mapping WHERE id =#{id}")
     int delete(Integer id);
 
@@ -82,7 +88,7 @@ public interface ServerServiceMappingRepository {
             @Result(column = "create_time", property = "createTime"),
             @Result(column = "update_time", property = "updateTime"),
     })
-    List<ServerServiceMapping> getByServerIdAndServiceId(@Param("serverId") Integer serverId, @Param("serviceId") Integer serviceId);
+    ServerServiceMapping getByServerIdAndServiceId(@Param("serverId") Integer serverId, @Param("serviceId") Integer serviceId);
 
     @Select("select a.name as serviceName, a.port as servicePort, " +
             "a.docker_image_name, a.docker_image_tag, a.docker_container_name," +

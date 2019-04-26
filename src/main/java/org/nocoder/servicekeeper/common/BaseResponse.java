@@ -1,8 +1,8 @@
 package org.nocoder.servicekeeper.common;
 
 /**
- * @author YangJinlong
  * @param <T>
+ * @author YangJinlong
  */
 public class BaseResponse<T> {
     private int status = 200;

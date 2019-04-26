@@ -2,6 +2,7 @@ package org.nocoder.servicekeeper.application.dto;
 
 /**
  * user dto
+ *
  * @author jason
  */
 public class UserDto {

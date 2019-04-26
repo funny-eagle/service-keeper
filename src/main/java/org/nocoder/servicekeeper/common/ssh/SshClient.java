@@ -7,17 +7,19 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * ssh client
+ *
  * @author YangJinlong
  */
 public class SshClient {
-    
+
     private static Logger logger = LoggerFactory.getLogger(SshClient.class);
 
-    public static List<String> execCommands(Certification c, List<String> commandList){
+    public static List<String> execCommands(Certification c, List<String> commandList) {
         try {
             JSch jsch = new JSch();
             Session session = jsch.getSession(c.getUser(), c.getHost(), c.getPort());
@@ -25,20 +27,20 @@ public class SshClient {
 
             session.setUserInfo(new SshUserInfo());
 
-            try{
+            try {
                 logger.info("connecting to ssh server...");
                 session.connect(30000);
                 logger.info("connected to ssh server.");
-            }catch(Exception e){
+            } catch (Exception e) {
                 logger.info("connect failed, retry after 3s...");
                 Thread.sleep(3000);
-                try{
+                try {
                     logger.info("try to connect to ssh server again...");
                     session.connect(30000);
                     logger.info("connected to ssh server.");
-                }catch (Exception ee){
+                } catch (Exception ee) {
                     logger.info("retry ssh connection failed.");
-                    return null;
+                    return Collections.emptyList();
                 }
             }
 
@@ -46,19 +48,21 @@ public class SshClient {
             commandList.forEach(command -> {
                 try {
                     StringBuilder executeResult = executeCommand(session, command);
+                    list.add(command);
                     list.add(executeResult.toString());
                 } catch (JSchException e) {
                     e.printStackTrace();
+                    logger.error("{}", e.getMessage());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("{}", e.getMessage());
                 }
             });
             session.disconnect();
             return list;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("{}", e.getMessage());
         }
-        return null;
+        return Collections.emptyList();
     }
 
     private static StringBuilder executeCommand(Session session, String command) throws JSchException, IOException {

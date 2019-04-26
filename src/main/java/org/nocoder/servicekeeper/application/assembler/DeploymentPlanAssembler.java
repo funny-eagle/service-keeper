@@ -16,8 +16,8 @@ import java.util.List;
  */
 @Component
 public class DeploymentPlanAssembler {
-    public DeploymentPlanDto convertToDto(DeploymentPlanResult result){
-        if(result == null){
+    public DeploymentPlanDto convertToDto(DeploymentPlanResult result) {
+        if (result == null) {
             return null;
         }
         DeploymentPlanDto dto = new DeploymentPlanDto();
@@ -25,8 +25,8 @@ public class DeploymentPlanAssembler {
         return dto;
     }
 
-    public List<DeploymentPlanDto> convertToDtoList(List<DeploymentPlanResult> resultList){
-        if(CollectionUtils.isEmpty(resultList)){
+    public List<DeploymentPlanDto> convertToDtoList(List<DeploymentPlanResult> resultList) {
+        if (CollectionUtils.isEmpty(resultList)) {
             return Collections.emptyList();
         }
         List<DeploymentPlanDto> dtos = new ArrayList<>();

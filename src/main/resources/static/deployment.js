@@ -143,10 +143,10 @@ function loadServicePanels(deploymentPlan) {
         "        </div>\n" +
         "        <div class=\"panel-body\">\n" +
         "            <div style='float: right'>\n" +
-        "                <button type=\"button\" class=\"btn btn-xs btn-primary\"> Deploy Latest Image</button>\n" +
-        "                <button type=\"button\" class=\"btn btn-xs btn-success\"> Start</button>\n" +
-        "                <button type=\"button\" class=\"btn btn-xs btn-warning\">Restart</button>\n" +
-        "                <button type=\"button\" class=\"btn btn-xs btn-danger\">Stop</button>\n" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-primary\"><span class='glyphicon glyphicon-upload'></span> Deploy Latest</button>&nbsp;" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-success\"><span class='glyphicon glyphicon-play-circle'></span> Start</button>&nbsp;" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-warning\"><span class='glyphicon glyphicon-repeat'></span> Restart</button>&nbsp;" +
+        "                <button type=\"button\" class=\"btn btn-xs btn-danger\"><span class='glyphicon glyphicon-off'></span> Stop</button>" +
         "            </div>\n" +
         "            <table class='table table-hover'>\n" +
         "                <thead>\n" +
@@ -192,16 +192,16 @@ function loadServersForservice(serviceId, serverList) {
             "<td>" + service_status_span + "</td>\n" +
             "<td><!-- Split button -->\n" +
             "    <div class=\"btn-group\">\n" +
-            "        <button type=\"button\" class=\"btn btn-default btn-xs\" onclick='deployLatestImage("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-play'></span> Deploy Latest Image</button>\n" +
+            "        <button type=\"button\" class=\"btn btn-default btn-xs\" onclick='deployLatestImage("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-upload'></span> Deploy Latest</button>\n" +
             "        <button type=\"button\" class=\"btn btn-default btn-xs dropdown-toggle\"\n" +
             "                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
             "            <span class=\"caret\"></span>\n" +
             "            <span class=\"sr-only\">Toggle Dropdown</span>\n" +
             "        </button>\n" +
             "        <ul class=\"dropdown-menu\">\n" +
-            "            <li><a href='javascript:void(0)' onclick='start("+serviceId+", "+serverList[i].serverId+")'>Start</a></li>\n" +
-            "            <li><a href='javascript:void(0)' onclick='restart("+serviceId+", "+serverList[i].serverId+")'>Restart</a></li>\n" +
-            "            <li><a href='javascript:void(0)' onclick='stop("+serviceId+", "+serverList[i].serverId+")'>Stop</a></li>\n" +
+            "            <li><a href='javascript:void(0)' onclick='start("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-play-circle'></span> Start</a></li>\n" +
+            "            <li><a href='javascript:void(0)' onclick='restart("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-repeat'></span> Restart</a></li>\n" +
+            "            <li><a href='javascript:void(0)' onclick='stop("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-off'></span> Stop</a></li>\n" +
             "        </ul>\n" +
             "    </div>\n" +
             "</td>\n" +

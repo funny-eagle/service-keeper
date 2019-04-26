@@ -9,5 +9,6 @@ spring:
     url: jdbc:sqlite:/Users/jason/local/github/service-keeper.db
     username:
     password:
-
+service-keeper:
+  deployment-log-path: /Users/jason/local/logs/service-keeper/
 

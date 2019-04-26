@@ -1,9 +1,6 @@
 package org.nocoder.servicekeeper.infrastructure.repository;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.nocoder.servicekeeper.domain.modal.DeploymentLog;
 import org.springframework.stereotype.Repository;
 
@@ -28,4 +25,7 @@ public interface DeploymentLogRepository {
 
     @Select("select max(id) from deployment_log where service_id=#{serviceId} and server_id=#{serverId}")
     Integer getDeploymentLogId(@Param("serviceId") Integer serviceId, @Param("serverId") Integer serverId);
+
+    @Update("update deployment_log set log_file_path = #{logFilePath} where id=#{id}")
+    void updateLogFilePath(@Param("id") Integer logId, @Param("logFilePath") String logFilePath);
 }

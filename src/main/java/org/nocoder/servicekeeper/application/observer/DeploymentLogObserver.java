@@ -1,5 +1,8 @@
 package org.nocoder.servicekeeper.application.observer;
 
+import org.nocoder.servicekeeper.application.service.DeploymentLogService;
+
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -9,6 +12,9 @@ import java.nio.file.StandardOpenOption;
 
 public class DeploymentLogObserver extends AbstactObserver {
 
+    @Resource
+    private DeploymentLogService deploymentLogService;
+
     public DeploymentLogObserver(DeploymentSubject subject) {
         this.subject = subject;
         this.subject.addObserver(this);
@@ -17,7 +23,7 @@ public class DeploymentLogObserver extends AbstactObserver {
     @Override
     public void update() {
         DeploymentMessage message = this.subject.getDeploymentMessage();
-        Path directories = Paths.get("/Users/jason/local/logs/service-keeper/");
+        Path directories = Paths.get(message.getLogFileDirectory());
 
         if (!Files.exists(directories)) {
             try {
@@ -27,7 +33,7 @@ public class DeploymentLogObserver extends AbstactObserver {
             }
         }
 
-        Path logfile = Paths.get(directories.toString() + "/deployment-" + message.getDeploymentLogId() + ".log");
+        Path logfile = Paths.get(message.getLogFileDirectory()+message.getLogFileName());
         if (!Files.exists(logfile)) {
             try {
                 Files.createFile(logfile);

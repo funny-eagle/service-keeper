@@ -64,7 +64,7 @@ public class DeploymentController {
         commandList.add(serviceDto.getDockerRmCommand());
         // run the new docker container
         commandList.add(serviceDto.getDockerRunCommand());
-        return operateTheDockerContainer(serviceId, serverId, commandList);
+        return operateTheDockerContainer(serviceId, serverId, commandList, "Deploy Latest");
     }
 
     /**
@@ -77,8 +77,7 @@ public class DeploymentController {
     @ResponseBody
     public BaseResponse<DeploymentResponse> stop(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
         return operateTheDockerContainer(
-                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerStopCommand())
-        );
+                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerStopCommand()), "Stop");
     }
 
     /**
@@ -91,8 +90,7 @@ public class DeploymentController {
     @ResponseBody
     public BaseResponse<DeploymentResponse> restart(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
         return operateTheDockerContainer(
-                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerRestartCommand())
-        );
+                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerRestartCommand()),"Restart");
     }
 
     /**
@@ -105,11 +103,11 @@ public class DeploymentController {
     @ResponseBody
     public BaseResponse<DeploymentResponse> start(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
         return operateTheDockerContainer(
-                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerStartCommand()));
+                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerStartCommand()), "Start");
     }
 
     private BaseResponse<DeploymentResponse> operateTheDockerContainer(
-            @PathVariable("id") Integer serviceId, @RequestParam Integer serverId, List<String> commandList) {
+            @PathVariable("id") Integer serviceId, @RequestParam Integer serverId, List<String> commandList, String operationType) {
         // check service status
         BaseResponse<DeploymentResponse> resp = checkServiceStatus(serviceId, serverId);
         if (resp != null) {
@@ -121,7 +119,7 @@ public class DeploymentController {
 
         // execute commands
         try {
-            deploymentService.executeCommand(serviceId, serverId, commandList);
+            deploymentService.executeCommand(serviceId, serverId, commandList, operationType);
         } catch (Exception e) {
             logger.error("execute command cause an exception, {}", e.getMessage());
             deploymentService.updateServiceStatus(serverId, serviceId, ServiceStatus.STOPPED.status());

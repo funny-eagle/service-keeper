@@ -20,6 +20,7 @@ import org.nocoder.servicekeeper.infrastructure.repository.ServerRepository;
 import org.nocoder.servicekeeper.infrastructure.repository.ServerServiceMappingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,13 +44,23 @@ public class DeploymentServiceImpl implements DeploymentService {
     private ServerServiceMappingAssembler assembler;
     @Resource
     private DeploymentLogRepository deploymentLogRepository;
-
     @Resource
     private DeploymentPlanAssembler deploymentPlanAssembler;
 
+    @Value("${service-keeper.deployment-log-path}")
+    private String deploymentLogPath;
+
     @Override
-    public void executeCommand(Integer serviceId, Integer serverId, List<String> commandList) throws Exception {
-        deploymentLogRepository.add(createDeploymentLog(serviceId, serverId));
+    public void executeCommand(Integer serviceId, Integer serverId, List<String> commandList, String operationType) throws Exception {
+        // create deployment log
+        deploymentLogRepository.add(createDeploymentLog(serviceId, serverId, operationType));
+        // get latest log id
+        Integer logId = deploymentLogRepository.getDeploymentLogId(serviceId, serverId);
+        // get logfile path from yml config
+        String directory = deploymentLogPath;
+        String fileName = "deployment-" + logId + "-" + DateTimeUtils.getCurrentDate() + ".log";
+        // update log file path
+        deploymentLogRepository.updateLogFilePath(logId, directory+fileName);
         threadPoolExecutor.execute(() -> {
             Server server = serverRepository.getById(serverId);
             logger.info("start to execute deploymentMessage...");
@@ -59,7 +70,8 @@ public class DeploymentServiceImpl implements DeploymentService {
             DeploymentSubject subject = new DeploymentSubject();
             new DeploymentLogObserver(subject);
             DeploymentMessage message = new DeploymentMessage();
-            message.setDeploymentLogId(deploymentLogRepository.getDeploymentLogId(serviceId, serverId));
+            message.setLogFileDirectory(directory);
+            message.setLogFileName(fileName);
             message.setServiceId(serviceId);
             message.setServerId(serverId);
             message.setCommandList(commandList);
@@ -69,12 +81,13 @@ public class DeploymentServiceImpl implements DeploymentService {
         });
     }
 
-    private DeploymentLog createDeploymentLog(Integer serviceId, Integer serverId) {
+    private DeploymentLog createDeploymentLog(Integer serviceId, Integer serverId, String operationType) {
         DeploymentLog log = new DeploymentLog();
         log.setServiceId(serviceId);
         log.setServerId(serverId);
-        log.setOperation("Deploy Latest Image");
-        log.setOperator("YangJinlong");
+        log.setOperation(operationType);
+        // TODO get current user id
+        log.setOperator("");
         log.setCreateTime(DateTimeUtils.getCurrentDateTime());
         return log;
     }

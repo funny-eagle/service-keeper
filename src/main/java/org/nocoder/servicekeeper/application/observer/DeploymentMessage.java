@@ -7,18 +7,27 @@ import java.util.List;
  * @date 2019/4/25.
  */
 public class DeploymentMessage {
-    private Integer deploymentLogId;
+    private String logFileDirectory;
+    private String logFileName;
     private Integer serviceId;
     private Integer serverId;
     private List<String> commandList;
     private List<String> resultList;
 
-    public Integer getDeploymentLogId() {
-        return deploymentLogId;
+    public String getLogFileDirectory() {
+        return logFileDirectory;
     }
 
-    public void setDeploymentLogId(Integer deploymentLogId) {
-        this.deploymentLogId = deploymentLogId;
+    public void setLogFileDirectory(String logFileDirectory) {
+        this.logFileDirectory = logFileDirectory;
+    }
+
+    public String getLogFileName() {
+        return logFileName;
+    }
+
+    public void setLogFileName(String logFileName) {
+        this.logFileName = logFileName;
     }
 
     public Integer getServiceId() {

@@ -10,7 +10,7 @@ import java.util.List;
  * @date 2019/4/17.
  */
 public interface DeploymentService {
-    void executeCommand(Integer serviceId, Integer serverId, List<String> commandList) throws Exception;
+    void executeCommand(Integer serviceId, Integer serverId, List<String> commandList, String operationType) throws Exception;
 
     int add(ServerServiceMappingDto dto);
 

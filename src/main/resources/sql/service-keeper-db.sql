@@ -10,16 +10,16 @@
  Target Server Version : 3008008
  File Encoding         : utf-8
 
- Date: 04/23/2019 14:51:48 PM
+ Date: 04/26/2019 16:34:39 PM
 */
 
 PRAGMA foreign_keys = false;
 
 -- ----------------------------
---  Table structure for deploy_log
+--  Table structure for _deploy_log_old_20190425
 -- ----------------------------
-DROP TABLE IF EXISTS "deploy_log";
-CREATE TABLE "deploy_log" (
+DROP TABLE IF EXISTS "_deploy_log_old_20190425";
+CREATE TABLE "_deploy_log_old_20190425" (
 "id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 "service_name"  TEXT,
 "service_version"  TEXT,
@@ -27,6 +27,35 @@ CREATE TABLE "deploy_log" (
 "deploy_time"  TEXT,
 "operator"  TEXT
 );
+
+-- ----------------------------
+--  Table structure for _deploy_log_old_20190425_1
+-- ----------------------------
+DROP TABLE IF EXISTS "_deploy_log_old_20190425_1";
+CREATE TABLE "_deploy_log_old_20190425_1" (
+	 "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	 "service_id" TEXT,
+	 "server_id" TEXT,
+	 "log_file_path" TEXT,
+	 "create_time" TEXT,
+	 "operator" TEXT
+);
+INSERT INTO "main".sqlite_sequence (name, seq) VALUES ("_deploy_log_old_20190425_1", '0');
+
+-- ----------------------------
+--  Table structure for deployment_log
+-- ----------------------------
+DROP TABLE IF EXISTS "deployment_log";
+CREATE TABLE "deployment_log" (
+	 "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	 "service_id" TEXT,
+	 "server_id" TEXT,
+	 "operation" TEXT,
+	 "log_file_path" TEXT,
+	 "create_time" TEXT,
+	 "operator" TEXT
+);
+INSERT INTO "main".sqlite_sequence (name, seq) VALUES ("deployment_log", '21');
 
 -- ----------------------------
 --  Table structure for server
@@ -41,7 +70,7 @@ CREATE TABLE "server" (
 	 "user" TEXT,
 	 "password" TEXT
 );
-INSERT INTO "main".sqlite_sequence (name, seq) VALUES ("server", '5');
+INSERT INTO "main".sqlite_sequence (name, seq) VALUES ("server", '8');
 
 -- ----------------------------
 --  Table structure for server_service_mapping
@@ -56,7 +85,7 @@ CREATE TABLE "server_service_mapping" (
 	 "update_time" TEXT,
 	 "operator" TEXT
 );
-INSERT INTO "main".sqlite_sequence (name, seq) VALUES ("server_service_mapping", '48');
+INSERT INTO "main".sqlite_sequence (name, seq) VALUES ("server_service_mapping", '71');
 
 -- ----------------------------
 --  Table structure for service
@@ -79,7 +108,7 @@ CREATE TABLE "service" (
 	 "create_time" TEXT,
 	 "update_time" TEXT
 );
-INSERT INTO "main".sqlite_sequence (name, seq) VALUES ("service", '22');
+INSERT INTO "main".sqlite_sequence (name, seq) VALUES ("service", '25');
 
 -- ----------------------------
 --  Table structure for user

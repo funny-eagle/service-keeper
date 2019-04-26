@@ -1,4 +1,4 @@
-package org.nocoder.servicekeeper.common;
+package org.nocoder.servicekeeper.common.response;
 
 /**
  * @param <T>

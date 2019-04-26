@@ -8,8 +8,9 @@ import org.nocoder.servicekeeper.application.service.DeploymentLogService;
 import org.nocoder.servicekeeper.application.service.DeploymentService;
 import org.nocoder.servicekeeper.application.service.ServerService;
 import org.nocoder.servicekeeper.application.service.ServiceService;
-import org.nocoder.servicekeeper.common.BaseResponse;
 import org.nocoder.servicekeeper.common.enumeration.ServiceStatus;
+import org.nocoder.servicekeeper.common.response.BaseResponse;
+import org.nocoder.servicekeeper.common.response.DeploymentResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -52,15 +53,7 @@ public class DeploymentController {
      */
     @GetMapping("/deploy/{id}")
     @ResponseBody
-    public BaseResponse deploy(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
-        ServerServiceMappingDto mappingDto = deploymentService.getByServerIdAndServiceId(serverId, serviceId);
-        if (mappingDto.getServiceStatus().equals(ServiceStatus.PENDING.status())) {
-            Map map = new HashMap();
-            map.put("message", "the service status is still pending.");
-            return new BaseResponse(map);
-        } else {
-            deploymentService.updateServiceStatus(serverId, serviceId, ServiceStatus.PENDING.status());
-        }
+    public BaseResponse<DeploymentResponse> deploy(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
         ServiceDto serviceDto = serviceService.getById(serviceId);
         List<String> commandList = new ArrayList<>();
         // pull the latest docker image
@@ -71,13 +64,90 @@ public class DeploymentController {
         commandList.add(serviceDto.getDockerRmCommand());
         // run the new docker container
         commandList.add(serviceDto.getDockerRunCommand());
+        return operateTheDockerContainer(serviceId, serverId, commandList);
+    }
+
+    /**
+     * stop the docker container
+     *
+     * @param serviceId
+     * @return
+     */
+    @GetMapping("/stop/{id}")
+    @ResponseBody
+    public BaseResponse<DeploymentResponse> stop(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
+        return operateTheDockerContainer(
+                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerStopCommand())
+        );
+    }
+
+    /**
+     * restart the docker container
+     *
+     * @param serviceId
+     * @return
+     */
+    @GetMapping("/restart/{id}")
+    @ResponseBody
+    public BaseResponse<DeploymentResponse> restart(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
+        return operateTheDockerContainer(
+                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerRestartCommand())
+        );
+    }
+
+    /**
+     * start the docker container
+     *
+     * @param serviceId
+     * @return
+     */
+    @GetMapping("/start/{id}")
+    @ResponseBody
+    public BaseResponse<DeploymentResponse> start(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
+        return operateTheDockerContainer(
+                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerStartCommand()));
+    }
+
+    private BaseResponse<DeploymentResponse> operateTheDockerContainer(
+            @PathVariable("id") Integer serviceId, @RequestParam Integer serverId, List<String> commandList) {
+        // check service status
+        BaseResponse<DeploymentResponse> resp = checkServiceStatus(serviceId, serverId);
+        if (resp != null) {
+            return resp;
+        }
+
+        // update service status to pending
+        deploymentService.updateServiceStatus(serverId, serviceId, ServiceStatus.PENDING.status());
+
+        // execute commands
         try {
             deploymentService.executeCommand(serviceId, serverId, commandList);
         } catch (Exception e) {
             logger.error("execute command cause an exception, {}", e.getMessage());
-            deploymentService.updateServiceStatus(serverId, serviceId, ServiceStatus.STOP.status());
+            deploymentService.updateServiceStatus(serverId, serviceId, ServiceStatus.STOPPED.status());
         }
-        return new BaseResponse();
+        DeploymentResponse response = new DeploymentResponse();
+        response.setStatus(DeploymentResponse.SUCCESS);
+        response.setMessage("Please see the deployment log and refresh current web page.");
+        return new BaseResponse(response);
+    }
+
+    /**
+     * if the service status is pending, return failed
+     *
+     * @param serviceId
+     * @param serverId
+     * @return
+     */
+    private BaseResponse<DeploymentResponse> checkServiceStatus(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
+        ServerServiceMappingDto mappingDto = deploymentService.getByServerIdAndServiceId(serverId, serviceId);
+        if (mappingDto.getServiceStatus().equals(ServiceStatus.PENDING.status())) {
+            DeploymentResponse response = new DeploymentResponse();
+            response.setStatus(DeploymentResponse.FAILED);
+            response.setMessage("The service's status is still pending.");
+            return new BaseResponse(response);
+        }
+        return null;
     }
 
 
@@ -120,6 +190,7 @@ public class DeploymentController {
                     serviceMap.computeIfAbsent(SERVICE_ID, k -> dto.getServiceId());
                     serviceMap.computeIfAbsent(SERVICE_NAME, k -> dto.getServiceName());
 
+                    // TODO refactor the serverMap to DTO Class
                     Map<String, Object> serverMap = new HashMap<>();
                     serverMap.put(SERVER_ID, dto.getServerId());
                     serverMap.put(SERVER_IP, dto.getServerIp());

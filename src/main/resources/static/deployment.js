@@ -136,7 +136,7 @@ function getDeploymentPlans() {
 
 function loadServicePanels(deploymentPlan) {
     var servicePanelContent =
-        "<div class=\"col-lg-12\">\n" +
+        "<div class=\"col-lg-12\" id='service-panel-"+deploymentPlan.serviceId+"'>\n" +
         "    <div class=\"panel panel-default\">\n" +
         "        <div class=\"panel-heading\">\n" +
         "            <h3 class=\"panel-title\">" + deploymentPlan.serviceName + "</h3>\n" +
@@ -173,14 +173,14 @@ function loadServersForservice(serviceId, serverList) {
     for (var i = 0; i < serverList.length; i++) {
         var service_status_span = '';
         var serviceStatus = serverList[i].serviceStatus;
-        if("Stop" == serviceStatus){
+        if("Stopped" == serviceStatus){
             service_status_span = '<span class=\"label label-danger\">' + serviceStatus + '</span>';
         }else if("Running" == serviceStatus){
             service_status_span = '<span class=\"label label-success\">' + serviceStatus + '</span>';
         }else if("Pending" == serviceStatus){
             service_status_span = '<span class=\"label label-warning\">' + serviceStatus + '</span>';
         }else{
-            service_status_span = '<span class=\"label label-warning\">Unknown</span>';
+            service_status_span = '<span class=\"label label-danger\">Lost Connection</span>';
         }
 
         server_tr_list += "<tr>\n" +
@@ -192,16 +192,16 @@ function loadServersForservice(serviceId, serverList) {
             "<td>" + service_status_span + "</td>\n" +
             "<td><!-- Split button -->\n" +
             "    <div class=\"btn-group\">\n" +
-            "        <button id='deploy-latest-image-btn' type=\"button\" class=\"btn btn-default btn-xs\" onclick='deployLatestImage("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-play'></span> Deploy Latest Image</button>\n" +
+            "        <button type=\"button\" class=\"btn btn-default btn-xs\" onclick='deployLatestImage("+serviceId+", "+serverList[i].serverId+")'><span class='glyphicon glyphicon-play'></span> Deploy Latest Image</button>\n" +
             "        <button type=\"button\" class=\"btn btn-default btn-xs dropdown-toggle\"\n" +
             "                data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
             "            <span class=\"caret\"></span>\n" +
             "            <span class=\"sr-only\">Toggle Dropdown</span>\n" +
             "        </button>\n" +
             "        <ul class=\"dropdown-menu\">\n" +
-            "            <li><a href=\"#\">Start</a></li>\n" +
-            "            <li><a href=\"#\">Restart</a></li>\n" +
-            "            <li><a href=\"#\">Stop</a></li>\n" +
+            "            <li><a href='javascript:void(0)' onclick='start("+serviceId+", "+serverList[i].serverId+")'>Start</a></li>\n" +
+            "            <li><a href='javascript:void(0)' onclick='restart("+serviceId+", "+serverList[i].serverId+")'>Restart</a></li>\n" +
+            "            <li><a href='javascript:void(0)' onclick='stop("+serviceId+", "+serverList[i].serverId+")'>Stop</a></li>\n" +
             "        </ul>\n" +
             "    </div>\n" +
             "</td>\n" +
@@ -211,13 +211,50 @@ function loadServersForservice(serviceId, serverList) {
 }
 
 function deployLatestImage(serviceId, serverId){
-    $("#deploy-latest-image-btn").attr("disabled", "disabled");
     $.ajax({
         type: "get",
         url: "deployment/deploy/"+serviceId+"?serverId="+serverId,
         dataType: "json",
         success: function (res) {
-            console.log(res.data);
+            console.log("status: "+res.data.status);
+            console.log("status: "+res.data.message);
+            alert(res.data.message);
+        }
+    });
+}
+function stop(serviceId, serverId){
+    $.ajax({
+        type: "get",
+        url: "deployment/stop/"+serviceId+"?serverId="+serverId,
+        dataType: "json",
+        success: function (res) {
+            console.log("status: "+res.data.status);
+            console.log("status: "+res.data.message);
+            alert(res.data.message);
+        }
+    });
+}
+function start(serviceId, serverId){
+    $.ajax({
+        type: "get",
+        url: "deployment/start/"+serviceId+"?serverId="+serverId,
+        dataType: "json",
+        success: function (res) {
+            console.log("status: "+res.data.status);
+            console.log("status: "+res.data.message);
+            alert(res.data.message);
+        }
+    });
+}
+function restart(serviceId, serverId){
+    $.ajax({
+        type: "get",
+        url: "deployment/restart/"+serviceId+"?serverId="+serverId,
+        dataType: "json",
+        success: function (res) {
+            console.log("status: "+res.data.status);
+            console.log("status: "+res.data.message);
+            alert(res.data.message);
         }
     });
 }

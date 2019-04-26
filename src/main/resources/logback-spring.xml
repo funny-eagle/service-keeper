@@ -24,6 +24,7 @@
         <logger name="org.nocoder.servicekeeper.infrastructure.repository" level="DEBUG"/>
         <root level="info">
             <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
         </root>
     </springProfile>
 

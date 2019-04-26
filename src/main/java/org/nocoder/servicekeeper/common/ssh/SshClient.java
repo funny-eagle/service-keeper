@@ -26,7 +26,7 @@ public class SshClient {
             session.setPassword(c.getPassword());
 
             session.setUserInfo(new SshUserInfo());
-
+            List resultList = new ArrayList();
             try {
                 logger.info("connecting to ssh server...");
                 session.connect(30000);
@@ -40,16 +40,17 @@ public class SshClient {
                     logger.info("connected to ssh server.");
                 } catch (Exception ee) {
                     logger.info("retry ssh connection failed.");
-                    return Collections.emptyList();
+                    resultList.add("can not connect to server " + c.getHost());
+                    return resultList;
                 }
             }
 
-            List list = new ArrayList();
+
             commandList.forEach(command -> {
                 try {
                     StringBuilder executeResult = executeCommand(session, command);
-                    list.add(command);
-                    list.add(executeResult.toString());
+                    resultList.add(command);
+                    resultList.add(executeResult.toString());
                 } catch (JSchException e) {
                     e.printStackTrace();
                     logger.error("{}", e.getMessage());
@@ -58,7 +59,7 @@ public class SshClient {
                 }
             });
             session.disconnect();
-            return list;
+            return resultList;
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
         }

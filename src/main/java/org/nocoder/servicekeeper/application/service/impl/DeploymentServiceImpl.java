@@ -91,7 +91,7 @@ public class DeploymentServiceImpl implements DeploymentService {
 
     @Override
     public int add(ServerServiceMappingDto dto) {
-        dto.setServiceStatus(ServiceStatus.STOP.status());
+        dto.setServiceStatus(ServiceStatus.STOPPED.status());
         dto.setCreateTime(DateTimeUtils.getCurrentDateTime());
         ServerServiceMapping mapping = assembler.convertToMapping(dto);
         return repository.insert(mapping);

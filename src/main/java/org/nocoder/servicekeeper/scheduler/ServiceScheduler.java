@@ -47,34 +47,31 @@ public class ServiceScheduler {
         List<ServerServiceMappingDto> ssmDtoList = deploymentService.getAll();
         ssmDtoList.forEach(ssmDto -> {
             ServerDto server = serverService.getById(ssmDto.getServerId());
-            Certification cert = new Certification();
-            cert.setHost(server.getIp());
-            cert.setPort(Integer.parseInt(server.getPort()));
-            cert.setUser(server.getUser());
-            cert.setPassword(server.getPassword());
+            Certification cert = createCertification(server);
             ServiceDto service = serviceService.getById(ssmDto.getServiceId());
             List<String> result = SshClient.execCommands(cert, Arrays.asList("docker ps | grep " + service.getDockerContainerName()));
-            if (CollectionUtils.isEmpty(result)) {
-                deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.UNKNOWN.status());
+            if (CollectionUtils.isEmpty(result) || result.size()<=1) {
+                deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.LOST_CONNECTION.status());
                 logger.info("can not connection to {} - {} service", service.getName(), server.getIp());
             } else if (StringUtils.isBlank(result.get(1))) {
-                if (ssmDto.getServiceStatus().equals(ServiceStatus.RUNNING.status())) {
-                    deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.STOP.status());
-                    logger.warn("{} - {} service may be crashed! please check it immediately!", service.getName(), server.getIp());
-                } else if (ssmDto.getServiceStatus().equals(ServiceStatus.PENDING.status())) {
-                    logger.info("{} - {} service is still pending", service.getName(), server.getIp());
-                } else if (ssmDto.getServiceStatus().equals(ServiceStatus.STOP.status())) {
-                    logger.info("{} - {} service is stop", service.getName(), server.getIp());
-                } else {
-                    deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.UNKNOWN.status());
-                    logger.info("can not connection to {} - {} service", service.getName(), server.getIp());
-                }
-
+                // when the command `docker ps | grep xxx` return an empty string, update the service status to stopped
+                deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.STOPPED.status());
+                logger.info("{} - {} service status is stopped.", service.getName(), server.getIp());
             } else {
+                // when the command `docker ps | grep xxx` return an not empty string, update service status to running
                 deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.RUNNING.status());
                 logger.info("update {} - {} service status to `running`", service.getName(), server.getIp());
             }
         });
         logger.info("scheduled task [checkAndUpdateServiceStatus] end.");
+    }
+
+    private Certification createCertification(ServerDto server) {
+        Certification cert = new Certification();
+        cert.setHost(server.getIp());
+        cert.setPort(Integer.parseInt(server.getPort()));
+        cert.setUser(server.getUser());
+        cert.setPassword(server.getPassword());
+        return cert;
     }
 }

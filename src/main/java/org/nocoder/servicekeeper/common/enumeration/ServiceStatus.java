@@ -8,7 +8,7 @@ public enum ServiceStatus {
     /**
      * stop
      */
-    STOP("Stop"),
+    STOPPED("Stopped"),
     /**
      * running
      */
@@ -17,7 +17,10 @@ public enum ServiceStatus {
      * pending
      */
     PENDING("Pending"),
-    UNKNOWN("Unknown");
+    /**
+     * lost connection
+     */
+    LOST_CONNECTION("Lost Connection");
 
 
     ServiceStatus(String status) {

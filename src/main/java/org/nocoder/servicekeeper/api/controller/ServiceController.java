@@ -6,7 +6,7 @@ import org.nocoder.servicekeeper.application.dto.ServiceDto;
 import org.nocoder.servicekeeper.application.service.DeploymentService;
 import org.nocoder.servicekeeper.application.service.ServerService;
 import org.nocoder.servicekeeper.application.service.ServiceService;
-import org.nocoder.servicekeeper.common.BaseResponse;
+import org.nocoder.servicekeeper.common.response.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

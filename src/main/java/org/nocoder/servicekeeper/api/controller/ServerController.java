@@ -3,7 +3,7 @@ package org.nocoder.servicekeeper.api.controller;
 import org.apache.commons.lang3.Validate;
 import org.nocoder.servicekeeper.application.dto.ServerDto;
 import org.nocoder.servicekeeper.application.service.ServerService;
-import org.nocoder.servicekeeper.common.BaseResponse;
+import org.nocoder.servicekeeper.common.response.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

@@ -148,7 +148,7 @@ function loadServicePanels(deploymentPlan) {
         "                <button type=\"button\" class=\"btn btn-xs btn-warning\">Restart</button>\n" +
         "                <button type=\"button\" class=\"btn btn-xs btn-danger\">Stop</button>\n" +
         "            </div>\n" +
-        "            <table class=\"table\">\n" +
+        "            <table class='table table-hover'>\n" +
         "                <thead>\n" +
         "                <tr>\n" +
         "                    <th>Server Name</th>\n" +

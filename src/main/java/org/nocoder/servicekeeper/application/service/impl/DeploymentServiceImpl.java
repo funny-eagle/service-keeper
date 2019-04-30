@@ -22,8 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -34,6 +36,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Service
 public class DeploymentServiceImpl implements DeploymentService {
     private Logger logger = LoggerFactory.getLogger(DeploymentServiceImpl.class);
+    private List<ServerServiceMappingDto> mappingDtoCacheList = Collections.emptyList();
     @Resource
     private ThreadPoolExecutor threadPoolExecutor;
     @Resource
@@ -60,7 +63,7 @@ public class DeploymentServiceImpl implements DeploymentService {
         String directory = deploymentLogPath;
         String fileName = "deployment-" + logId + "-" + DateTimeUtils.getCurrentDate() + ".log";
         // update log file path
-        deploymentLogRepository.updateLogFilePath(logId, directory+fileName);
+        deploymentLogRepository.updateLogFilePath(logId, directory + fileName);
         threadPoolExecutor.execute(() -> {
             Server server = serverRepository.getById(serverId);
             logger.info("start to execute deploymentMessage...");
@@ -107,30 +110,48 @@ public class DeploymentServiceImpl implements DeploymentService {
         dto.setServiceStatus(ServiceStatus.STOPPED.status());
         dto.setCreateTime(DateTimeUtils.getCurrentDateTime());
         ServerServiceMapping mapping = assembler.convertToMapping(dto);
-        return repository.insert(mapping);
+        int res = repository.insert(mapping);
+        if (res > 0) {
+            reloadMappingDtoCacheList();
+        }
+        return res;
     }
 
     @Override
     public int update(ServerServiceMappingDto dto) {
         dto.setUpdateTime(DateTimeUtils.getCurrentDateTime());
         ServerServiceMapping mapping = assembler.convertToMapping(dto);
-        return repository.update(mapping);
+        int res = repository.update(mapping);
+        if(res>0){
+            reloadMappingDtoCacheList();
+        }
+        return res;
     }
 
     @Override
     public int updateServiceStatus(Integer serverId, Integer serviceId, String serviceStatus) {
-        return repository.updateServiceStatus(serverId, serviceId, serviceStatus);
+        int res = repository.updateServiceStatus(serverId, serviceId, serviceStatus);
+        if (res > 0) {
+            reloadMappingDtoCacheList();
+        }
+        return res;
     }
 
     @Override
     public int delete(Integer id) {
-        return repository.delete(id);
+        int res = repository.delete(id);
+        if (res > 0) {
+            reloadMappingDtoCacheList();
+        }
+        return res;
     }
 
     @Override
     public List<ServerServiceMappingDto> getAll() {
-        List<ServerServiceMapping> mappings = repository.getAll();
-        return assembler.convertToDtoList(mappings);
+        if (CollectionUtils.isEmpty(this.mappingDtoCacheList)) {
+            reloadMappingDtoCacheList();
+        }
+        return this.mappingDtoCacheList;
     }
 
     @Override
@@ -156,5 +177,9 @@ public class DeploymentServiceImpl implements DeploymentService {
     @Override
     public List<DeploymentPlanDto> getDeploymentPlans() {
         return deploymentPlanAssembler.convertToDtoList(repository.getDeploymentPlans());
+    }
+
+    private void reloadMappingDtoCacheList(){
+        this.mappingDtoCacheList = assembler.convertToDtoList(repository.getAll());
     }
 }

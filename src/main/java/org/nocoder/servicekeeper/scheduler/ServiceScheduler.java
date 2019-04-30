@@ -46,21 +46,32 @@ public class ServiceScheduler {
         logger.info("scheduled task [checkAndUpdateServiceStatus] start.");
         List<ServerServiceMappingDto> ssmDtoList = deploymentService.getAll();
         ssmDtoList.forEach(ssmDto -> {
+            // get server
             ServerDto server = serverService.getById(ssmDto.getServerId());
+            // create cert
             Certification cert = createCertification(server);
+            // get service
             ServiceDto service = serviceService.getById(ssmDto.getServiceId());
+            // exec command
             List<String> result = SshClient.execCommands(cert, Arrays.asList("docker ps | grep " + service.getDockerContainerName()));
+            ServerServiceMappingDto ssMappingDto = deploymentService.getByServerIdAndServiceId(ssmDto.getServerId(), ssmDto.getServiceId());
             if (CollectionUtils.isEmpty(result) || result.size()<=1) {
-                deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.LOST_CONNECTION.status());
-                logger.info("can not connection to {} - {} service", service.getName(), server.getIp());
+                if(!ssMappingDto.getServiceStatus().equals(ServiceStatus.LOST_CONNECTION.status())){
+                    deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.LOST_CONNECTION.status());
+                }
+                logger.debug("can not connection to {} - {} service", service.getName(), server.getIp());
             } else if (StringUtils.isBlank(result.get(1))) {
                 // when the command `docker ps | grep xxx` return an empty string, update the service status to stopped
-                deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.STOPPED.status());
-                logger.info("{} - {} service status is stopped.", service.getName(), server.getIp());
+                if(!ssMappingDto.getServiceStatus().equals(ServiceStatus.STOPPED.status())){
+                    deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.STOPPED.status());
+                }
+                logger.debug("{} - {} service status is stopped.", service.getName(), server.getIp());
             } else {
                 // when the command `docker ps | grep xxx` return an not empty string, update service status to running
-                deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.RUNNING.status());
-                logger.info("update {} - {} service status to `running`", service.getName(), server.getIp());
+                if(!ssMappingDto.getServiceStatus().equals(ServiceStatus.RUNNING.status())){
+                    deploymentService.updateServiceStatus(ssmDto.getServerId(), ssmDto.getServiceId(), ServiceStatus.RUNNING.status());
+                }
+                logger.debug("update {} - {} service status to `running`", service.getName(), server.getIp());
             }
         });
         logger.info("scheduled task [checkAndUpdateServiceStatus] end.");

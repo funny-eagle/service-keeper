@@ -28,23 +28,20 @@ public class SshClient {
             session.setUserInfo(new SshUserInfo());
             List resultList = new ArrayList();
             try {
-                logger.info("connecting to ssh server...");
                 session.connect(30000);
-                logger.info("connected to ssh server.");
             } catch (Exception e) {
-                logger.info("connect failed, retry after 3s...");
+                // retry after 3s.
                 Thread.sleep(3000);
                 try {
-                    logger.info("try to connect to ssh server again...");
                     session.connect(30000);
-                    logger.info("connected to ssh server.");
                 } catch (Exception ee) {
-                    logger.info("retry ssh connection failed.");
+                    logger.error("create ssh connection failed, host={}", c.getHost());
                     resultList.add("can not connect to server " + c.getHost());
                     return resultList;
                 }
             }
 
+            logger.info("create ssh connection success, host={}", c.getHost());
 
             commandList.forEach(command -> {
                 try {
@@ -87,14 +84,13 @@ public class SshClient {
                     break;
                 }
                 String s = new String(bytes, 0, i);
-                logger.info(s);
                 executeResult.append(s);
             }
             if (channel.isClosed()) {
                 if (in.available() > 0) {
                     continue;
                 }
-                logger.info("channel is closed, exist-status={}", channel.getExitStatus());
+                logger.debug("channel is closed, exist-status={}", channel.getExitStatus());
                 break;
             }
         }

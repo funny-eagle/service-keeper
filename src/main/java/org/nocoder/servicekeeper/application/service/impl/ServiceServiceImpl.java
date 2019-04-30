@@ -9,8 +9,10 @@ import org.nocoder.servicekeeper.infrastructure.repository.ServiceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,6 +22,8 @@ import java.util.List;
  */
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService {
+
+    private List<ServiceDto> serviceDtoCacheList = Collections.emptyList();
 
     private Logger logger = LoggerFactory.getLogger(ServiceServiceImpl.class);
 
@@ -38,8 +42,10 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public List<ServiceDto> getAll() {
-        List<Service> serviceList = serviceRepository.getAll();
-        return assembler.convertToDtoList(serviceList);
+        if (CollectionUtils.isEmpty(this.serviceDtoCacheList)) {
+            reloadServiceDtoCacheList();
+        }
+        return this.serviceDtoCacheList;
     }
 
     @Override
@@ -47,7 +53,13 @@ public class ServiceServiceImpl implements ServiceService {
     public int insert(ServiceDto dto) {
         dto.setCreateTime(DateTimeUtils.getCurrentDateTime());
         Service service = assembler.convertToService(dto);
-        return serviceRepository.insert(service);
+        int res = serviceRepository.insert(service);
+        if (res > 0) {
+            logger.info("insert service success");
+            // update the service cache list after insert
+            reloadServiceDtoCacheList();
+        }
+        return res;
     }
 
     @Override
@@ -55,7 +67,30 @@ public class ServiceServiceImpl implements ServiceService {
     public int update(ServiceDto dto) {
         dto.setUpdateTime(DateTimeUtils.getCurrentDateTime());
         Service service = assembler.convertToService(dto);
-        return serviceRepository.update(service);
+        int res = serviceRepository.update(service);
+        if (res > 0) {
+            logger.info("update service success");
+            // update the service cache list after insert
+            reloadServiceDtoCacheList();
+        }
+        return res;
+    }
+
+    private void reloadServiceDtoCacheList() {
+        this.serviceDtoCacheList = assembler.convertToDtoList(serviceRepository.getAll());
+    }
+
+    @Override
+    public int delete(Integer id) {
+        int res = serviceRepository.delete(id);
+        if (res > 0) {
+            if (res > 0) {
+                logger.info("delete service success");
+                // update the service cache list after delte
+                reloadServiceDtoCacheList();
+            }
+        }
+        return res;
     }
 
 }

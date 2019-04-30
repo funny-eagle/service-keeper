@@ -41,21 +41,9 @@ function update(data) {
     });
 }
 
-var dockerImageNameTag = "";
 
-$("#dockerImageName").focusout(function () {
-    updateDockerInfo();
-});
-$("#dockerImageTag").focusout(function () {
-    updateDockerInfo();
-});
-
-$("#dockerContainerName").focusout(function () {
-    updateDockerInfo();
-});
-
-function updateDockerInfo() {
-    dockerImageNameTag = $("#dockerImageName").val() + ":" + $("#dockerImageTag").val();
+function gererateDockerCommands() {
+    var dockerImageNameTag = $("#dockerImageName").val() + ":" + $("#dockerImageTag").val();
     $("#dockerPullCommand").html("docker pull " + dockerImageNameTag);
     $("#dockerRunCommand").html("docker run -it -d --name " + $("#dockerContainerName").val() + " --net=host " + dockerImageNameTag);
     $("#dockerStartCommand").html("docker start " + $("#dockerContainerName").val());
@@ -63,7 +51,3 @@ function updateDockerInfo() {
     $("#dockerStopCommand").html("docker stop " + $("#dockerContainerName").val());
     $("#dockerRmCommand").html("docker rm " + $("#dockerContainerName").val());
 }
-
-$("#edit-run-container").click(function () {
-    $("#dockerRunCommand").removeAttr("disabled");
-});

@@ -18,12 +18,19 @@ public interface UserRepository {
     User getById(Integer id);
 
     @Insert("INSERT INTO user(name,ip,port,user,password) VALUES(#{name}, #{ip}, #{port}), #{user}, #{password}")
-    void insert(User user);
+    int insert(User user);
 
-    @Update("UPDATE user SET name=#{name}, ip=#{ip}, port=#{port}, user=#{user}, password=#{password} WHERE id =#{id}")
-    void update(User user);
+    @Update("UPDATE user SET name=#{name}, password=#{password}, last_sign_in_time=#{lastSignInTime}, last_sign_in_ip=#{lastSignInIp} WHERE id =#{id}")
+    int update(User user);
 
-    @Delete("DELETE FROM User WHERE id =#{id}")
-    void delete(Integer id);
+    @Delete("DELETE FROM User WHERE id = #{id}")
+    int delete(Integer id);
 
+    @Select("SELECT * FROM user WHERE name=#{name} and password=#{password}")
+    @Results({
+            @Result(column = "create_time", property = "createTime"),
+            @Result(column = "last_sign_in_time", property = "lastSignInTime"),
+            @Result(column = "last_sign_in_ip", property = "lastSignInIp")
+    })
+    User getByUsernameAndPassword(@Param("name") String username, @Param("password") String password);
 }

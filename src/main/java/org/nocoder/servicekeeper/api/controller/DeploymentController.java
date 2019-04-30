@@ -4,9 +4,7 @@ import org.apache.commons.lang3.Validate;
 import org.nocoder.servicekeeper.application.dto.DeploymentPlanDto;
 import org.nocoder.servicekeeper.application.dto.ServerServiceMappingDto;
 import org.nocoder.servicekeeper.application.dto.ServiceDto;
-import org.nocoder.servicekeeper.application.service.DeploymentLogService;
 import org.nocoder.servicekeeper.application.service.DeploymentService;
-import org.nocoder.servicekeeper.application.service.ServerService;
 import org.nocoder.servicekeeper.application.service.ServiceService;
 import org.nocoder.servicekeeper.common.enumeration.ServiceStatus;
 import org.nocoder.servicekeeper.common.response.BaseResponse;
@@ -35,10 +33,6 @@ public class DeploymentController {
     private DeploymentService deploymentService;
     @Resource
     private ServiceService serviceService;
-    @Resource
-    private ServerService serverService;
-    @Resource
-    private DeploymentLogService deploymentLogService;
 
     @GetMapping("")
     public String deployment() {
@@ -90,7 +84,7 @@ public class DeploymentController {
     @ResponseBody
     public BaseResponse<DeploymentResponse> restart(@PathVariable("id") Integer serviceId, @RequestParam Integer serverId) {
         return operateTheDockerContainer(
-                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerRestartCommand()),"Restart");
+                serviceId, serverId, Arrays.asList(serviceService.getById(serviceId).getDockerRestartCommand()), "Restart");
     }
 
     /**
@@ -126,7 +120,7 @@ public class DeploymentController {
         }
         DeploymentResponse response = new DeploymentResponse();
         response.setStatus(DeploymentResponse.SUCCESS);
-        response.setMessage("Please see the deployment log and refresh current web page.");
+        response.setMessage("Operation success. Please read the deployment log and refresh current web page");
         return new BaseResponse(response);
     }
 
@@ -142,7 +136,7 @@ public class DeploymentController {
         if (mappingDto.getServiceStatus().equals(ServiceStatus.PENDING.status())) {
             DeploymentResponse response = new DeploymentResponse();
             response.setStatus(DeploymentResponse.FAILED);
-            response.setMessage("The service's status is still pending.");
+            response.setMessage("Operation failed. The service's status is still pending.");
             return new BaseResponse(response);
         }
         return null;

@@ -76,7 +76,6 @@ function saveDeploymentPlan() {
         dataType: "json",
         data: JSON.stringify(data),
         success: function (res) {
-            console.log(res.data);
             $("#deploymentPlanModal").modal("hide");
             window.location.reload();
         }
@@ -216,9 +215,8 @@ function deployLatestImage(serviceId, serverId){
         url: "deployment/deploy/"+serviceId+"?serverId="+serverId,
         dataType: "json",
         success: function (res) {
-            console.log("status: "+res.data.status);
-            console.log("status: "+res.data.message);
-            alert(res.data.message);
+            $("#tipModalBody").html(res.data.message);
+            $("#tipModal").modal("show");
         }
     });
 }

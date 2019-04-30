@@ -30,10 +30,10 @@
                     <li class="dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown"
                            role="button" aria-haspopup="true" aria-expanded="false"><span
-                                class="glyphicon glyphicon-user"></span> <span id="username">Jason</span> <span class="caret"></span></a>
+                                class="glyphicon glyphicon-user"></span> <span id="username"></span> <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="javascript:void(0)">Change Password</a></li>
-                            <li><a href="/sign-out">Sign out</a></li>
+                            <li><a href="/sign-out">Sign Out</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -48,7 +48,7 @@
                 type: "GET",
                 dataType: "json",
                 success: function(res){
-                    $("#username").html(res.data.user);
+                    $("#username").html(res.data.user.name);
                 }
             });
         });

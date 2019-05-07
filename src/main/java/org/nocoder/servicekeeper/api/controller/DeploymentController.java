@@ -148,7 +148,7 @@ public class DeploymentController {
     public BaseResponse saveServerServiceMapping(@RequestBody List<ServerServiceMappingDto> dtos) {
         Validate.notEmpty(dtos, "deployment plan can not be none");
         dtos.forEach(dto -> {
-            if (deploymentService.getByServerIdAndServiceId(dto.getServerId(), dto.getServiceId()) != null) {
+            if (deploymentService.getByServerIdAndServiceId(dto.getServerId(), dto.getServiceId()) == null) {
                 deploymentService.add(dto);
             } else {
                 logger.info("the mapping {}, {} is existed", dto.getServerId(), dto.getServiceId());

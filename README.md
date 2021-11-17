@@ -1,4 +1,4 @@
-# Service Keeper(TBD)
+# Service Keeper
 
 ![home](src/main/resources/images/service-keeper-home.png)
 
